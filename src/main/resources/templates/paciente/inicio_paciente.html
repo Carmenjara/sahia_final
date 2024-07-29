@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+
+<head th:replace="fragments/head :: head">
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 25px"></div>
+	<div class="container">
+		<h1 class="display-4 text-center" style="font-family: 'Bree Serif'">Gestión
+			Pacientes</h1>
+		<hr class="bg-info">
+		<p class="text-center" style="font-family: 'Bree Serif';">Elija
+			una opción:</p>
+		<div class="row bg-light rounded shadow-sm">
+			<div class="col-lg-8 rounded"
+				style="position: relative; padding-top: 2%; margin-bottom: 2%; margin-left: 33%">
+				
+				<div class="row" style="margin-top: 2%; margin-bottom: 3%;">
+					<a href="/pacientes/listar_pacientes" class="btn btn-info btn-lg shadow"
+						title="Listar Personal" style="width: 50%;"><i
+						class="fa fa-list-alt"></i> | Listar Pacientes </a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+</body>
+
+</html>

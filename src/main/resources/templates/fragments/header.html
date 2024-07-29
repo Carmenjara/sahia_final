@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/head :: head">
+</head>
+
+<body>
+	<header th:fragment="header">
+		<div>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding-left: 6%">
+				<div class="collapse navbar-collapse" id="navbarSupportedContent1">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active"><a class="btn btn-outline-info nav-link" href="/"><i
+									class="fa fa-home"></i> | Inicio</a></li>
+						<li th:if="${role == 'ROLE_ADMIN'}" class="nav-item dropdown"><a
+								class="nav-link dropdown-toggle" href="#" id="navbarDropdownPersonal" role="button"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+									class="fa-solid fa-hospital-user"></i> | Pacientes </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<!--<a class="dropdown-item" th:href="@{/pacientes/crear_paciente}">Registrar
+									paciente</a> -->
+								<a th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}" class="dropdown-item"
+									th:href="@{/pacientes/listar_pacientes}">Listar
+									pacientes</a>
+							</div>
+						</li>
+						<li th:if="${role == 'ROLE_ADMIN'}" class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+								id="navbarDropdownPersonal" role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"><i class="fa-solid fa-users"></i> | Usuarios </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}" class="dropdown-item"
+									th:href="@{/usuarios/crear_usuario}">Registrar
+									usuario</a> <a th:if="${role == 'ROLE_ADMIN'}" class="dropdown-item"
+									th:href="@{/usuarios/listar_usuarios}">Listar
+									usuarios</a>
+							</div>
+						</li>
+						<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+								id="navbarDropdownVehiculos" role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"><i class="fa-solid fa-rectangle-list"></i> | Especialidades </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a th:if="${role == 'ROLE_ADMIN'}" class="dropdown-item"
+									th:href="@{/especialidad/crear_especialidad}">Registrar
+									especialidad</a> <a
+									th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}"
+									class="dropdown-item" th:href="@{especialidad/listar_especialidad}">Listar
+									especialidades</a>
+							</div>
+						</li>
+						<li th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}"
+							class="nav-item"><a class="nav-link" th:href="@{/horario/registrar_horario}"
+								id="navbarDropdownVehiculos" role="button" aria-haspopup="true" aria-expanded="false"><i
+									class="fa-solid fa-calendar-days"></i> | Horarios </a>
+
+						</li>
+
+						<li class="nav-item dropdown"><a
+								class="nav-link dropdown-toggle" href="#" id="navbarDropdownVehiculos" role="button"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+									class="fa-solid fa-calendar-check"></i> | Citas Médicas </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a th:if="${role == 'ROLE_ADMIN'}" class="dropdown-item" th:href="@{/citamedica/crear_citamedica}">Registrar
+									cita médica</a> <a th:if="${role == 'ROLE_ADMIN'}" class="dropdown-item"
+									th:href="@{/citamedica/listar_citamedica}">Listar
+									citas médicas</a>
+
+								<a th:if="${role == 'ROLE_PACIENTE'}" class="dropdown-item" th:href="@{/citamedica/crear_citamedica_paciente}">Registrar
+									cita médica</a> <a th:if="${role == 'ROLE_PACIENTE'}" class="dropdown-item"
+									th:href="@{/citamedica/mostrar_citamedica_paciente}">Listar
+									citas médicas</a>
+							</div>
+						</li>
+						<!--<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+								id="navbarDropdownVehiculos" role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"><i class="fa-solid fa-book-medical"></i> | Historial Médico </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" th:href="@{/vehiculos/listar_vehiculo}">Listar
+									historial médico</a>
+							</div>
+						</li>-->
+
+						<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+								id="navbarDropdownVehiculos" role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"><i class="fa-solid fa-user-doctor"></i> | Médicos </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<!--<a class="dropdown-item" th:href="@{/vehiculos/tipo_vehiculo}">Registrar
+									médico</a> --><a th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}"
+									class="dropdown-item" th:href="@{/horario/listar_medicos}">Listar
+									médicos</a>
+								</di>
+						<li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+								id="navbarDropdownDescentralizacion" role="button" data-toggle="dropdown"
+								aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-plus"></i> |
+								Otros </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" th:href="@{/descentralizacion/inicio_distrito}">Asistencia</a>
+								<a class="dropdown-item" th:href="@{/descentralizacion/inicio_circuito}">Factura</a>
+								<a class="dropdown-item" th:href="@{/descentralizacion/inicio_circuito}">Rol</a>
+								<div class="dropdown-divider"></div>
+								<h6 class="dropdown-header">RESULTADOS</h6>
+								<a class="dropdown-item" href="/descentralizacion/vpd">Reportes</a> <a
+									class="dropdown-item" href="/descentralizacion/vvd">Estadísticas</a>
+								<div class="dropdown-divider"></div>
+								<h6 class="dropdown-header">TRATAMIENTO</h6>
+								<a class="dropdown-item" th:href="@{/descentralizacion/listar_vpd}">Medicamento</a> <a
+									class="dropdown-item" th:href="@{/descentralizacion/listar_vvd}">Receta</a>
+							</div>
+						</li>
+
+						<li class="nav-item dropdown"><a class="nav-link dropdown-toggle username-text" href="#"
+								id="navbarDropdownUsuarios" role="button" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"><i class="fa fa-user-circle user-icon"></i> |
+								[[${#httpServletRequest.remoteUser}]] </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<form class="dropdown-item" th:action="@{/logout}" method="post">
+									<button class="in-line btn btn-danger shadow-sm" type="submit"
+										title="Cerrar sesión">
+										<i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+									</button>
+								</form>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div class="container">
+			<div class="alert alert-success alert-dismissible fade show mt-2" role="alert" th:if="${success != null}">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<span th:utext="${success}"></span>
+			</div>
+			<div class="alert alert-danger alert-dismissible fade show mt-2" role="alert" th:if="${error != null}">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<span th:utext="${error}"></span>
+			</div>
+		</div>
+	</header>
+</body>
+
+</html>

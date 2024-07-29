@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/head :: head">
+</head>
+<body>
+	<header th:fragment="header_inicio">
+		<div>
+			<div class="shadow p-0 mb-1 bg-white rounded container"
+				style="background: white;">
+				<nav class="navbar navbar-light " style="background-color: white;">
+					<h5 th:inline="text" style="margin-top: 1%;">
+						<i class="fa fa-user-circle"></i> | [[${#httpServletRequest.remoteUser}]]
+					</h5>
+					<form th:action="@{/logout}" method="post">
+						<button class="in-line btn btn-danger shadow-sm" type="submit"
+							title="Guardar">Cerrar Sesión</button>
+					</form>
+				</nav>
+				<hr class="bg-dark">
+			</div>
+		</div>
+	</header>
+</body>
+</html>

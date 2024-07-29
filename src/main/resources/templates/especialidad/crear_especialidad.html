@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head :: head">
+	<title>Registro Especialidad</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 15px"></div>
+
+	<div class="container">
+		<div class="row bg-light rounded shadow-sm justify-content-center">
+			<div class="col-sm-8 align-self-center">
+				<div>
+					<h1 class="display-4 text-center" style="font-family: 'Bree Serif';">Registrar Especialidad</h1>
+					<hr class="bg-info">
+					<p class="text-center" style="font-family: 'Bree Serif';">Ingrese los campos solicitados:</p>
+				</div>
+				<form action="#" th:action="@{/especialidad/crear_especialidad}" th:object="${especialidadDTO}"
+					method="post">
+					<div class="row align-self-center" style="margin-bottom: 2%">
+
+						<div class="col-md-6" style="margin: auto">
+
+							<div class="form-group">
+								<label>Nombre <small class="text-secondary">(requerido)</small></label>
+								<input class="form-control" type="text" id="nombre" required
+									th:field="*{especialidad.nombre}" placeholder="Pediatrí..." maxlength="255" />
+							</div>
+							<div class="form-group">
+								<label>Descripción <small class="text-secondary">(requerido)</small></label>
+								<input class="form-control" type="text" id="descripcion"
+									placeholder="Enfermedades de ..." maxlength="255"
+									th:field="*{especialidad.descripcion}" />
+							</div>
+
+							<div class="col-lg-6 align-self-center" style="margin: auto">
+								<button class="btn btn-info col-sm-12" type="submit">
+									<i class="fa fa-check"></i> Guardar
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- wizard container -->
+	</div>
+	<div style="height: 20px;"></div>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+</body>
+
+</html>

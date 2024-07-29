@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+
+	<table th:fragment="plantilla_repuestos" class="d-none">
+
+		<tbody id="plantillaRepuestosMantenimiento">
+			<tr id="row_{ID}">
+				<td><a class="btn btn-danger btn-xs text-white"
+					title="Eliminar Repuesto/Mantenimiento"
+					onclick="repuestosHelper.eliminarRepuesto({ID});"><i
+						class="fa fa-times"></i></a></td>
+				<td class="d-none"><input type="hidden" value="{ID}"
+					name="repuesto_id[]" /></td>
+				<td style="width: 10%"><input type="number" value="1"
+					name="cantidad[]" id="cantidad_{ID}" class="form-control"
+					style="text-align: center;"
+					onChange="repuestosHelper.calcularImporte({ID}, {PRECIO}, this.value);" /></td>
+				<td>{NOMBRE}</td>
+				<td>{GARANTIA} KM</td>
+				<td>$ {PRECIO}</td>
+				<td><span id="total_importe_{ID}">0</span></td>
+			</tr>
+		</tbody>
+
+	</table>
+
+</body>
+</html>

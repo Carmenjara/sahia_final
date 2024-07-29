@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head :: head">
+<title>Gestión Especialidad</title>
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 25px"></div>
+	<div class="container">
+		<h1 class="display-4 text-center" style="font-family: 'Bree Serif'">Gestión
+			Especialidades</h1>
+		<hr class="bg-info">
+		<p class="text-center" style="font-family: 'Bree Serif';">Elija
+			una opción:</p>
+		<div class="row bg-light rounded shadow-sm">
+			<div class="col-lg-8 rounded"
+				style="position: relative; padding-top: 2%; margin-bottom: 2%; margin-left: 33%">
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row" style="margin-top: 3%; margin-bottom: 3%;">
+					<a href="/especialidad/crear_especialidad"
+						class="btn btn-info btn-lg shadow" title="Registrar Especialidad"
+						style="width: 50%;"><i class="fa fa-map-marked-alt"></i> |
+						Registrar Especialidad </a>
+				</div>
+				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row" style="margin-top: 2%; margin-bottom: 3%;">
+					<a href="/especialidad/listar_especialidad"
+						class="btn btn-info btn-lg shadow" title="Listar Especialidades"
+						style="width: 50%;"><i class="fa fa-list-alt"></i> | Listar
+						Especialidades</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+</body>
+
+</html>

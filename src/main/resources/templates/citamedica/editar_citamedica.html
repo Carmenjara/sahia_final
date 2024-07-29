@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments/head :: head">
+		<title>Reprogramar Cita Médica</title>
+	</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 15px"></div>
+
+	<div class="container">
+		<div class="row bg-light rounded shadow-sm justify-content-center">
+			<div class="col-sm-8 align-self-center">
+				<div>
+					<h1 class="display-4 text-center" style="font-family: 'Bree Serif';">Reprogramar Cita Médica</h1>
+					<hr class="bg-info">
+					<p class="text-center" style="font-family: 'Bree Serif';">Actualice
+						los campos solicitados:</p>
+				</div>
+				<form action="#" th:action="@{/citamedica/reprogramar_citamedica/{id}(id=${citaDTO.cita.id})}"
+					th:object="${citaDTO}" method="post">
+					<!-- Campos de Usuario -->
+					<div class="row align-self-center" style="margin-bottom: 2%">
+						<!--PERSONA-->
+						<div class="col-md-6" style="margin: auto">
+
+							<div class="form-group">
+								<label>Identificador</label>
+								<input readonly class="form-control" type="text" id="numero"
+									th:field="*{cita.numero}" />
+							</div>
+							<div class="form-group">
+								<label>Motivo</label>
+								<input readonly class="form-control" type="text" id="motivo"
+									th:field="*{cita.motivo}" />
+							</div>
+							<div class="form-group">
+								<label>Estado</label>
+								<input readonly class="form-control" type="text"
+									th:value="*{cita.estado == 0 ? 'Atendida' : (cita.estado == 1 ? 'Sin Atender' : (cita.estado == 3 ? 'Cancelada' : 'Desconocido'))}" />
+							</div>
+							<div class="form-group">
+								<label>Especialidad</label>
+								<input readonly class="form-control" type="text" id="especialidad"
+									th:field="*{cita.especialidad.nombre}" />
+							</div>
+						</div>
+						<div class="col-md-6" style="margin: auto">
+							<div class="form-group">
+								<label>Paciente</label>
+								<input readonly class="form-control" type="text" id="paciente"
+									th:value="*{cita.paciente.persona.nombres + ' ' + cita.paciente.persona.apellidos}" />
+							</div>
+							<div class="form-group">
+								<label>Médico</label>
+								<input readonly class="form-control" type="text"
+									th:value="*{cita.medico.persona.nombres + ' ' + cita.medico.persona.apellidos}" />
+								<input type="hidden" id="medicoId" th:value="*{cita.medico.id}" />
+							</div>
+
+							<!--Fecha-->
+							<div class="form-group">
+								<label for="fecha">Fecha <small class="text-secondary">(requerido)</small></label>
+								<select type="date" class="form-control" id="fecha"
+									th:field="*{medicoHorario.horario.fecha}">
+									<option value="0">Seleccione una fecha</option>
+								</select>
+							</div>
+
+							<!-- Hora -->
+							<div class="form-group">
+								<label for="hora">Hora <small class="text-secondary">(requerido)</small></label>
+								<select class="form-control" id="hora" th:field="*{horario.id}">
+									<option value="0">Seleccione una hora</option>
+								</select>
+							</div>
+
+							<!-- Campo oculto para horarioId -->
+							<input type="hidden" id="horarioId" th:field="*{horario.id}" />
+
+						</div>
+						<div class="col-lg-6 align-self-center" style="margin: auto">
+							<button class="btn btn-info col-sm-12" type="submit">
+								<i class="fa fa-check"></i> Guardar
+							</button>
+						</div>
+
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div style="height: 20px;"></div>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+	<script type="text/javascript" src="/js/comboReprogramarCita.js"></script>
+
+</body>
+
+</html>

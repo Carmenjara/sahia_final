@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head :: head"></head>
+
+<body style="background: white">
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 25px"></div>
+	<div class="container">
+		<h1 class="display-4 text-center" style="font-family: 'Bree Serif'">Sistema de Automatización Hospitalaria
+			Isidro Ayora</h1>
+		<hr class="bg-info">
+		<p class="text-center" style="font-family: 'Bree Serif';">Elija una opción:</p>
+		<div
+			class="row bg-light rounded">
+			<div class="col-lg-6 rounded text-center" style="position: relative; padding-top: 2%; margin-bottom: 2%;">
+				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}"class="row" style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/pacientes/listar_pacientes}" class="btn btn-info btn-lg shadow" title="Pacientes"
+						style="width: 85%;"><i class="fa-solid fa-hospital-user"></i> |
+						Pacientes </a>
+				</div>
+				<!--<div th:if="${role == 'ROLE_ADMIN'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/descentralizacion/inicio_descentralizacion}" class="btn btn-info btn-lg shadow"
+						title="Roles" style="width: 85%;"><i class="fa-solid fa-user-shield"></i> |
+						Roles </a>
+				</div>-->
+
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/usuarios/inicio_usuarios}" class="btn btn-info btn-lg shadow" title="Usuarios"
+						style="width: 85%;"><i class="fa-solid fa-users"></i>
+						| Usuarios </a>
+				</div>
+				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/especialidad/inicio_especialidad}" class="btn btn-info btn-lg shadow"
+						title="Especialidades" style="width: 85%;"><i class="fa-solid fa-rectangle-list"></i> |
+						Especialidades </a>
+				</div>
+				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/horario/registrar_horario}" class="btn btn-info btn-lg shadow" title="Horarios"
+						style="width: 85%;"><i class="fa-solid fa-calendar-days"></i> | Horarios </a>
+				</div>
+
+			</div>
+			<div class="col-lg-6 rounded text-center" style="position: relative; padding-top: 2%; margin-bottom: 2%;">
+
+
+				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/horario/listar_medicos}" class="btn btn-info btn-lg shadow" title="Médicos"
+						style="width: 85%;"><i class="fa-solid fa-user-doctor"></i> |
+						Médicos </a>
+				</div>
+				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/citamedica/inicio_citamedica}" class="btn btn-info btn-lg shadow"
+						title="Citas Médicas" style="width: 85%;"><i class="fa-solid fa-calendar-check"></i> | Citas
+						Médicas </a>
+				</div>
+				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/consultorio/inicio_consultorio}" class="btn btn-info btn-lg shadow"
+						title="Consultorios" style="width: 85%;"><i class="fa-solid fa-hospital"></i> |
+						Consultorios </a>
+				</div>
+				<!--
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/citamedica/inicio_citamedica}" class="btn btn-info btn-lg shadow" title="Facturas"
+						style="width: 85%;"><i class="fa-solid fa-file-invoice-dollar"></i> | Facturas </a>
+				</div>
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/vehiculos/inicio_vehiculo}" class="btn btn-info btn-lg shadow" title="Medicamentos"
+						style="width: 85%;"><i class="fa-solid fa-pills"></i>
+						| Medicamentos</a>
+				</div>
+				<div class="row" style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/vehiculos/inicio_vehiculo}" class="btn btn-info btn-lg shadow" title="Recetas"
+						style="width: 85%;"><i class="fa-solid fa-file-prescription"></i>
+						| Recetas</a>
+				</div>-->
+			</div>
+			<!--<div class="col-lg-4 rounded text-center" style="position: relative; padding-top: 2%; margin-bottom: 4%;">
+				
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/citamedica/inicio_citamedica}" class="btn btn-info btn-lg shadow"
+						title="Historial Médico" style="width: 85%;"><i class="fa-solid fa-book-medical"></i> |
+						Historial Médico </a>
+				</div>
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/vehiculos/inicio_vehiculo}" class="btn btn-info btn-lg shadow" title="Asistencia"
+						style="width: 85%;"><i class="fa-solid fa-clipboard"></i>
+						| Asistencia</a>
+				</div>
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/vehiculos/inicio_vehiculo}" class="btn btn-info btn-lg shadow" title="Estadísticas"
+						style="width: 85%;"><i class="fa-solid fa-chart-pie"></i>
+						| Estadísticas</a>
+				</div>
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/citamedica/inicio_citamedica}" class="btn btn-info btn-lg shadow" title="Reportes"
+						style="width: 85%;"><i class="fa fa-file-invoice"></i> |
+						Reportes </a>
+				</div>
+			</div>-->
+		</div>
+	</div>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+</body>
+
+</html>

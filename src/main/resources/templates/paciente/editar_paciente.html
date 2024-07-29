@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+<title>Editar Paciente</title>
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 15px"></div>
+
+	<div class="container">
+		<div class="row bg-light rounded shadow-sm justify-content-center">
+			<div class="col-sm-8 align-self-center">
+				<div>
+					<h1 class="display-4 text-center"
+						style="font-family: 'Bree Serif';">Editar Paciente</h1>
+					<hr class="bg-info">
+					<p class="text-center" style="font-family: 'Bree Serif';">Actualice
+						los campos necesarios:</p>
+				</div>
+				<form action="#" th:action="@{/personal/guardar_personal}"
+					th:object="${personal}" method="post">
+					<div class="col align-self-center" style="margin-bottom: 2%">
+						<div class="col-sm-6" style="margin: auto">
+							<div class="form-group">
+								<label>ID</label> <input name="id" required type="text"
+									class="form-control" readonly th:field="*{idpersonal}">
+							</div>
+							<div class="form-group">
+								<label>Cédula <small class="text-secondary">(requerido)</small></label>
+								<input id="cedula" name="cedula" required type="text"
+									maxlength="10" class="form-control" placeholder="1104785..."
+									th:field="*{cedulapersonal}">
+							</div>
+							<div class="form-group">
+								<label>Nombres <small class="text-secondary">(requerido)</small></label>
+								<input name="nombres" required type="text"
+									style="text-transform: uppercase;" class="form-control"
+									placeholder="CARLOS..." th:field="*{nombrespersonal}">
+							</div>
+							<div class="form-group">
+								<label>Apellidos <small class="text-secondary">(requerido)</small></label>
+								<input name="apellidos" required type="text"
+									style="text-transform: uppercase;" class="form-control"
+									placeholder="TORRES..." th:field="*{apellidospersonal}">
+							</div>
+							<div class="form-group">
+								<label>Rango <small class="text-secondary">(requerido)</small></label>
+								<div class="">
+									<select class="form-control" th:field="*{rangopersonal}">
+										<option value="0">SELECCIONE UN RANGO</option>
+										<option th:each="item : ${items_rango}"
+											th:value="${item.id}" th:text="${item.nombre}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 align-self-center" style="margin: auto">
+							<button class="btn btn-info col-sm-12" type="submit">
+								<i class="fa fa-check"></i> Actualizar
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div style="height: 20px;"></div>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+</body>
+</html>

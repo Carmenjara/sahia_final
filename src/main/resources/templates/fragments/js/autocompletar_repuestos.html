@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+	<script type="text/javascript" th:fragment="autocompletar_repuestos">
+		$(document).ready(function() {
+
+			$("#buscar_repuesto").autocomplete({
+
+				source : function(request, response) {
+					$.ajax({
+						//type : 'GET',
+						url : "/mantenimiento/cargar_repuestos/" + request.term,
+						dataType : "json",
+						data : {
+							term : request.term
+						},
+						success : function(data) {
+							//alert(data);
+							//console.log(data[0]);
+							//data = $.parseJSON(data);
+							response($.map(data, function (item) {
+								return {
+									value : item.id,
+									label : item.nombre,
+									garantia : item.garantia,
+									precio : item.precio
+								};
+							}));
+						}});
+				},
+				select : function(event, ui) {
+					//console.log(ui.item.id, ui.item.nombre, ui.item.garantia, ui.item.precio);
+					//$("#buscar_repuesto").val(ui.item.label);
+
+					if (repuestosHelper.hasRepuesto(ui.item.value)){
+						repuestosHelper.incrementarCantidad(ui.item.value, ui.item.precio);
+						return false;
+					}
+					
+					var linea = $("#plantillaRepuestosMantenimiento").html();
+					
+					linea = linea.replace(/{ID}/g, ui.item.value);
+					linea = linea.replace(/{NOMBRE}/g, ui.item.label);
+					linea = linea.replace(/{GARANTIA}/g, ui.item.garantia);
+					linea = linea.replace(/{PRECIO}/g, ui.item.precio);
+
+					$("#cargarRepuestosMantenimiento tbody").append(linea);
+					repuestosHelper.calcularImporte(ui.item.value, ui.item.precio, 1);
+
+					return false;
+				}
+
+			});
+			$("form").submit(function(){
+				$("#plantillaRepuestosMantenimiento").remove();
+				return;
+			});
+		});
+
+		var repuestosHelper = {
+			calcularImporte : function(id, precio, cantidad) {
+				$("#total_importe_" + id).html(parseFloat(precio) * parseInt(cantidad));
+				this.calcularSubTotal();
+				this.calcularIva();
+			},
+			hasRepuesto: function(id){
+				
+				var resultado = false;
+				
+				$('input[name="repuesto_id[]"]').each(function(){
+					if(parseInt(id) == parseInt($(this).val())){
+						resultado = true;
+					}
+				});
+				return resultado;
+			},
+			incrementarCantidad: function(id, precio){
+				var cantidad = $("#cantidad_" + id).val() ? parseInt($("#cantidad_" + id).val()) :0;
+				$("#cantidad_" + id).val(++cantidad);
+				this.calcularImporte(id, precio, cantidad);
+			},
+			eliminarRepuesto: function(id){
+				$("#row_" + id).remove();
+				this.calcularSubTotal();
+				this.calcularIva();
+			},
+			calcularSubTotal: function(){
+				var subtotal = 0;
+				
+				$('span[id^="total_importe_"]').each(function(){
+					
+					subtotal += parseFloat($(this).html());
+					
+				});
+				console.log("El subtotal es: " + subtotal);
+				$('#subtotal').html(subtotal.toFixed(2));
+				var iva = 0.12;
+				var totalIva = subtotal * iva;
+				$("#iva").html((parseFloat(subtotal) * iva).toFixed(2));
+				$("#gran_total").html("$ " + (parseFloat(subtotal) + parseFloat(totalIva)).toFixed(2));
+				//this.calcularIva(subtotal);
+				
+			},
+			calcularIva: function(){
+				/*
+				var subtotal = document.getElementById("subtotal").value;
+				
+				console.log("lo que llega a la funcion: " + parseFloat(subtotal));
+				var iva = 1.12;
+				var totalIva = subtotal * iva;
+				console.log("Total Iva: " + totalIva);
+				$("#iva").html(parseFloat(subtotal) * iva);*/
+				
+			}
+		}
+	</script>
+</body>
+</html>

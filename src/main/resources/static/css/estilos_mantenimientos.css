@@ -1,0 +1,161 @@
+/* ------------------------- */
+/* ESTILOS FICHA VEHICULAR */
+/* ------------------------- */
+.fv-dtsvehiculo input, .fv-dtsdesc input{
+    border-bottom: #ced4da 1px solid;
+    cursor: default;
+}
+
+
+/* ------------------------- */
+
+
+/* ------------------------- */
+/* CREAR MANTENIMIENTO */
+/* ------------------------- */
+
+.fv-dtsvehiculo .row div, .fv-dtsdesc .row div{
+    background: #262626;
+}
+
+#km,
+#responsable {
+    border-bottom: #ced4da 1px solid;
+    text-align: center;
+    cursor: default;
+}
+
+.titulo {
+    background: #343a40;
+    color: #e9ecef;
+    border-bottom: white 1px solid;
+    border-radius: 5px;
+}
+
+/* ------------------------- */
+/* POPUP SELECCIONAR PERSONAL*/
+/* ------------------------- */
+
+.overlay {
+    background: rgba(0, 0, 0, .3);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    visibility: hidden;
+}
+
+.overlay.active {
+    visibility: visible;
+}
+
+.popup {
+    background: #F8F8F8;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    padding: 20px;
+    /*text-align: center;*/
+    width: 75%;
+    transition: .3s ease all;
+    transform: scale(0.7);
+    opacity: 0;
+}
+
+/* ------------------------- */
+/* ANIMACIONES SELECCIONAR PERSONAL*/
+/* ------------------------- */
+.popup.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.popup.active h3 {
+    animation: entradaTitulo .8s ease .5s forwards;
+}
+
+.popup.active h4 {
+    animation: entradaSubtitulo .8s ease .5s forwards;
+}
+
+.popup.active .contenedor-inputs {
+    animation: entradaInputs 1s linear 1s forwards;
+}
+
+/* ------------------------- */
+/* POPUP EDITAR KM */
+/* ------------------------- */
+
+.overlay1 {
+    background: rgba(0, 0, 0, .3);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    visibility: hidden;
+}
+
+.overlay1.active {
+    visibility: visible;
+}
+
+.popup1 {
+    background: #F8F8F8;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    padding: 20px;
+    /*text-align: center;*/
+    width: 50%;
+    transition: .3s ease all;
+    transform: scale(0.7);
+    opacity: 0;
+}
+
+.popup1 .contenedor-inputs input {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 52px;
+    font-size: 18px;
+    line-height: 52px;
+    text-align: center;
+    border: 1px solid #BBBBBB;
+}
+
+
+/* ------------------------- */
+/* ANIMACIONES EDITAR KM*/
+/* ------------------------- */
+.popup1.active {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.popup1.active h3 {
+    animation: entradaTitulo .8s ease .5s forwards;
+}
+
+.popup1.active h4 {
+    animation: entradaSubtitulo .8s ease .5s forwards;
+}
+
+.popup1.active .contenedor-inputs {
+    animation: entradaInputs 1s linear 1s forwards;
+}
+
+/* Cambiar color del icono del usuario */
+.user-icon {
+    color: #ff5733; /* Cambia este valor por el color que prefieras */
+}
+
+/* Cambiar color del texto del nombre de usuario */
+.username-text {
+    color: #4a90e2; /* Cambia este valor por el color que prefieras */
+}
+

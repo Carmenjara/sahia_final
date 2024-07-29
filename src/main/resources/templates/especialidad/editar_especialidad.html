@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments/head :: head">
+		<title>Editar Especialidad</title>
+	</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 15px"></div>
+
+	<div class="container">
+		<div class="row bg-light rounded shadow-sm justify-content-center">
+			<div class="col-sm-8 align-self-center">
+				<div>
+					<h1 class="display-4 text-center" style="font-family: 'Bree Serif';">Editar Especialidad</h1>
+					<hr class="bg-info">
+					<p class="text-center" style="font-family: 'Bree Serif';">Actualice
+						los campos solicitados:</p>
+				</div>
+				<form action="#"
+					th:action="@{/especialidad/guardar_especialidad_editada/{id}(id=${especialidadDTO.especialidad.id})}"
+					th:object="${especialidadDTO}" method="post">
+					<!-- Campos de Consultorio -->
+					<div class="row align-self-center" style="margin-bottom: 2%">
+
+						<div class="col-md-6" style="margin: auto">
+							<input type="text" id="id" hidden th:field="*{especialidad.id}" />
+
+							<div class="form-group">
+								<label>Nombre<small class="text-secondary">(requerido)</small></label>
+								<input class="form-control" type="text" id="nombre" required
+									th:field="*{especialidad.nombre}" />
+							</div>
+							<div class="form-group">
+								<label>Descripción<small class="text-secondary">(requerido)</small></label>
+								<input class="form-control" type="text" id="descripcion" required
+									th:field="*{especialidad.descripcion}" />
+							</div>
+							<div class="form-group">
+								<label for="enabled">Estado</label>
+								<div>
+									<select id="enabled" th:field="*{especialidad.estado}" class="form-control">
+										<option value="0">No disponible</option>
+										<option value="1">Disponible</option>
+										<option value="2">Inhabilitado</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="col-lg-6 align-self-center" style="margin: auto">
+								<button class="btn btn-info col-sm-12" type="submit">
+									<i class="fa fa-check"></i> Guardar
+								</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div style="height: 20px;"></div>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+
+</body>
+
+</html>

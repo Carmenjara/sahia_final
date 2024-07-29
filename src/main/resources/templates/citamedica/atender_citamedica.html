@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head :: head">
+	<title>Atender Cita Médica</title>
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 15px"></div>
+
+	<div class="container">
+		<div class="row bg-light rounded shadow-sm justify-content-center">
+			<div class="col-sm-12 align-self-center">
+				<div>
+					<h1 class="display-4 text-center" style="font-family: 'Bree Serif';">Atender Cita Médica</h1>
+					<div class="input-group-append" style="margin-top: auto; align-self: flex-end;">
+						<button title="Ver Historial" id="verHistorial" class="btn btn-primary" type="submit">
+							Ver Historial <i class="fa-solid fa-magnifying-glass"></i>
+						</button>
+					</div>
+					<hr class="bg-info" style="width: 100%;">
+				</div>
+
+				<!-- Información de la Cita -->
+				<div class="row row-cols-4">
+					<div class="col">
+						<div class="form-group">
+							<label>Identificador</label>
+							<input readonly class="form-control" type="text" id="numero"
+								th:field="*{citaDTO.cita.numero}" />
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group">
+							<label>Motivo</label>
+							<input readonly class="form-control" type="text" id="motivo"
+								th:field="*{citaDTO.cita.motivo}" />
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group">
+							<label>Paciente</label>
+							<input readonly class="form-control" type="text" id="paciente"
+								th:value="*{citaDTO.cita.paciente.persona.nombres + ' ' + citaDTO.cita.paciente.persona.apellidos}" />
+						</div>
+
+					</div>
+					<div class="col">
+						<div class="form-group">
+							<label>Especialidad</label>
+							<input readonly class="form-control" type="text" id="especialidad"
+								th:field="*{citaDTO.cita.especialidad.nombre}" />
+						</div>
+
+					</div>
+				</div>
+				<hr class="bg-info">
+				<p class="text-center" style="font-family: 'Bree Serif';">Ingrese los campos solicitados:</p>
+
+				<!-- Cuadrantes para información adicional -->
+				<form action="#" th:action="@{/citamedica/guardar_atencion_cita/{id}(id=${citaDTO.cita.id})}" th:object="${citaDTO}" method="post">
+					<input hidden class="form-control" type="text" id="id" th:field="*{cita.id}" />
+					<div class="row">
+						<!-- Diagnóstico -->
+						<div class="col-md-6">
+							<h2>Diagnóstico </h2>
+							<div class="form-group">
+								<label> <small class="text-secondary">(requerido)</small></label>
+								<textarea required maxlength="255" class="form-control" id="diagnostico"
+									name="diagnostico" rows="3" th:field="*{historial.diagnostico}"></textarea>
+							</div>
+						</div>
+
+						<!-- Exámenes -->
+						<div class="col-md-6">
+							<h2>Exámenes</h2>
+							<div class="form-group">
+								<label> <small class="text-secondary">(requerido)</small></label>
+								<textarea required maxlength="255" class="form-control" id="examenes" name="examenes"
+									th:field="*{historial.examenes}" rows="3"></textarea>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<!-- Receta Médica -->
+						<div class="col-md-6">
+							<h2>Receta Médica</h2>
+							<div class="form-group">
+								<label>Indicaciones<small class="text-secondary">(requerido)</small></label>
+								<textarea required maxlength="255" class="form-control" id="indicaciones"
+									name="indicaciones" th:field="*{receta.indicaciones}" rows="2"></textarea>
+							</div>
+							<div class="form-group">
+								<label>Duración del Tratamiento<small class="text-secondary">(requerido)</small></label>
+								<input required maxlength="30" type="text" class="form-control"
+									id="duracion_Tratamiento" name="duracionTratamiento"
+									th:field="*{receta.duracionTratamiento}" />
+							</div>
+							<div class="form-group">
+								<label>Frecuencia del Tratamiento<small
+										class="text-secondary">(requerido)</small></label>
+								<input required maxlength="30" type="text" class="form-control"
+									id="frecuencia_Tratamiento" name="frecuenciaTratamiento"
+									th:field="*{receta.frecuenciaTratamiento}" />
+							</div>
+						</div>
+
+						<!-- Medicamentos -->
+						<div class="col-md-6">
+							<!--<h2>Medicamentos</h2>
+							<div class="form-group">
+								<label for="medicamentos">Medicamentos</label>
+								<select multiple class="form-control" id="medicamentos" name="medicamentoIds"
+									th:field="*{medicamentoIds}">
+									<option th:each="medicamento : ${medicamentos}" th:value="${medicamento.id}"
+										th:text="${medicamento.nombre}"></option>
+								</select>
+							</div>-->
+							<h2>Próximo Control</h2>
+							<!-- Fecha de la cita -->
+
+							<input type="hidden" id="medicoId" th:value="*{cita.medico.id}" />
+							
+
+							<div class="row">
+								<!--Fecha-->
+								<div class="form-group">
+									<label for="fecha">Fecha <small class="text-secondary">(requerido)</small></label>
+									<select required type="date" class="form-control" id="fecha"
+										th:field="*{medicoHorario.horario.fecha}">
+										<option value="0">Seleccione una fecha</option>
+									</select>
+								</div>
+
+								<!-- Hora -->
+								<div class="form-group">
+									<label for="hora">Hora <small class="text-secondary">(requerido)</small></label>
+									<select required class="form-control" id="hora" th:field="*{horario.id}">
+										<option value="0">Seleccione una hora</option>
+									</select>
+								</div>
+							</div>
+
+							<!-- Campo oculto para horarioId -->
+							<input type="hidden" id="horarioId" th:field="*{horario.id}" />
+							<input type="hidden" id="proximoControl" th:value="*{horario.id}" />
+						</div>
+
+					</div>
+					<div class="row">
+						<div class="col-lg-6 offset-lg-3 align-self-center">
+							<button class="btn btn-info col-sm-12" type="submit">
+								<i class="fa fa-check"></i> Guardar
+							</button>
+						</div>
+					</div>
+				</form>
+				<br>
+
+			</div>
+		</div>
+	</div>>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+	<script type="text/javascript" src="/js/comboReprogramarCita.js"></script>
+</body>
+
+</html>

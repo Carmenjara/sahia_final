@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head_index :: head">
+	<!-- Agregar los estilos de Bootstrap -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+	<div class="container">
+		<div class="alert alert-success alert-dismissible fade show mt-2" role="alert" th:if="${success != null}">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<span th:text="${success}"></span>
+		</div>
+		<div class="alert alert-danger alert-dismissible fade show mt-2" role="alert" th:if="${error != null}">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<span th:text="${error}"></span>
+		</div>
+	</div>
+	<div class="wrapper fadeInDown">
+		<div id="formContent">
+
+			<div class="fadeIn first">
+				<i class="fas fa-user-circle"></i>
+			</div>
+
+			<form class="col-12" th:action="@{/login}" method="post">
+				<input type="text" id="username" class="fadeIn second" name="username" placeholder="Usuario" autofocus
+					required>
+				<input type="password" id="password" class="fadeIn third" name="password" placeholder="Contraseña"
+					required>
+				<input type="submit" class="fadeIn fourth" value="Ingresar">
+			</form>
+
+			<div id="formBottom">
+				<button type="button" class="btn btn-link" data-toggle="modal" data-target="#registerModal">
+					Aún no tienes cuenta, regístrate
+				</button>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel"
+		aria-hidden="true" th:classappend="${showRegisterModal} ? 'show' : ''"
+		th:style="${showRegisterModal} ? 'display: block;' : ''">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="registerModalLabel">Registro de Usuario</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+
+
+					<form action="#" th:action="@{/register}" th:object="${usuarioDTO}" method="post">
+
+						<div class="row align-self-center" style="margin-bottom: 2%">
+							<!--PERSONA-->
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Identificación <small class="text-secondary">(requerido)</small></label>
+									<input id="identificacion" name="identificacion" style="text-transform: uppercase;"
+										required type="text" maxlength="13" class="form-control"
+										placeholder="1104785..." oninput="validarIdentificacion(event)">
+								</div>
+								<div class="form-group">
+									<label>Nombres <small class="text-secondary">(requerido)</small></label>
+									<input name="nombres" required type="text" style="text-transform: uppercase;"
+										class="form-control" placeholder="CARLOS..." oninput="validarNomAp(event)">
+								</div>
+								<div class="form-group">
+									<label>Apellidos <small class="text-secondary">(requerido)</small></label>
+									<input name="apellidos" required type="text" style="text-transform: uppercase;"
+										class="form-control" placeholder="TORRES..." oninput="validarNomAp(event)">
+								</div>
+								<div class="form-group">
+									<label>Ciudad Residencia <small class="text-secondary">(requerido)</small></label>
+									<input name="persona.ciudad_residencia" required type="text"
+										style="text-transform: uppercase;" class="form-control" placeholder="LOJA ...">
+								</div>
+
+								<div class="form-group">
+									<label>Dirección <small class="text-secondary">(requerido)</small></label>
+									<input name="direccion" required type="text" style="text-transform: uppercase;"
+										class="form-control" placeholder="ROCAFUERTE Y ...">
+								</div>
+
+								<div class="form-group">
+									<label>Correo <small class="text-secondary">(requerido)</small></label>
+									<input name="correo" required type="email" style="text-transform: lowercase;"
+										class="form-control" placeholder="ctorres@gmail.com">
+								</div>
+
+
+
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>Fecha de nacimiento <small class="text-secondary">(requerido)</small></label>
+									<input name="fecha_nacimiento" required type="date" class="form-control">
+								</div>
+								<div class="form-group">
+									<label>Género <small class="text-secondary">(requerido)</small></label>
+									<br>
+									<div>
+										<select class="form-control" id="genero" name="genero"
+											style="text-transform: uppercase;" required>
+											<option value="">Seleccione un género</option>
+											<option value="MASCULINO">Masculino</option>
+											<option value="FEMENINO">Femenino</option>
+											<option value="OTRO">Otro</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Teléfono<small class="text-secondary">(requerido)</small></label>
+									<input name="telefono" required type="tel" pattern="\d*" inputmode="numeric"
+										maxlength="10" class="form-control" placeholder="0987654321">
+								</div>
+
+								<!--USUARIO-->
+								<div class="form-group">
+									<label>Usuario<small class="text-secondary">(requerido)</small></label>
+									<input class="form-control" type="text" id="username"
+										style="text-transform: lowercase;" required placeholder="jaimito" />
+								</div>
+								<div class="form-group">
+									<label>Contraseña<small class="text-secondary">(requerido)</small></label>
+									<input class="form-control" type="password" id="password" required
+										placeholder="j41m1t0.." />
+								</div>
+
+
+							</div>
+
+							<div class="col-lg-4 align-self-center" style="margin: auto">
+								<button class="btn btn-info col-sm-12" type="submit">
+									<i class="fa fa-check"></i> Guardar
+								</button>
+							</div>
+						</div>
+					</form>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="fragments/footer :: footer"></footer>
+
+
+</body>
+
+</html>

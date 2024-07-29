@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragments/head :: head">
+	<title>Registro Cita Médica</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 15px"></div>
+
+	<div class="container">
+		<div class="row bg-light rounded shadow-sm justify-content-center">
+			<div class="col-sm-8 align-self-center">
+				<div>
+					<h1 class="display-4 text-center" style="font-family: 'Bree Serif';">Registrar Cita Médica</h1>
+					<hr class="bg-info">
+					<p class="text-center" style="font-family: 'Bree Serif';">Ingrese los campos solicitados:</p>
+				</div>
+				<form action="#" th:action="@{/citamedica/crear_citamedica_paciente}" th:object="${citaDTO}" method="post">
+					<div class="container">
+						<div class="row justify-content-center">
+							<div class="col-sm-8" style="margin: auto">
+
+								<!-- Buscar Paciente por cédula -->
+								<div class="form-group">
+									<label for="cedula">Buscar Paciente por cédula<small
+											class="text-secondary">(requerido)</small></label>
+									<div class="input-group">
+										<input type="text" id="cedula" name="cedula" class="form-control" maxlength="13"
+											placeholder="11011..." />
+										<div class="input-group-append">
+											<button id="buscarPaciente" class="btn btn-primary" type="submit">
+												<i class="fa-solid fa-magnifying-glass"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+
+								<!-- Información del paciente -->
+								<div id="pacienteInfo" style="display: none;">
+									<p><span></span></p>
+									<input type="hidden" th:field="*{paciente.id}" name="paciente.id" />
+								</div>
+
+								<!-- Error del paciente -->
+								<div id="errorPaciente" style="color: red; display: none;"></div>
+
+								<input type="hidden" th:field="*{paciente.id}" name="paciente.id" />
+
+								<!-- Motivo -->
+								<div class="form-group">
+									<label for="motivo">Motivo <small class="text-secondary">(requerido)</small></label>
+									<input type="text" id="motivo" class="form-control" th:field="*{cita.motivo}"
+										placeholder="Dolor en ..." maxlength="255" required />
+								</div>
+
+								<!-- Especialidad -->
+								<div class="form-group">
+									<label for="especialidad">Especialidad <small
+											class="text-secondary">(requerido)</small></label>
+									<select class="form-control" id="especialidad" th:field="*{cita.especialidad}">
+										<option value="0">Seleccione una especialidad</option>
+										<option th:each="item : ${especialidades}" th:value="${item.id}"
+											th:text="${item.nombre}"></option>
+									</select>
+								</div>
+
+								<!-- Médico -->
+								<div class="form-group">
+									<label for="medico">Médico <small class="text-secondary">(requerido)</small></label>
+									<select class="form-control" id="medico" th:field="*{cita.medico}">
+										<option value="0">Seleccione un médico</option>
+										<!-- Las opciones se llenarán dinámicamente con AJAX -->
+									</select>
+								</div>
+
+								<!-- Fecha de la cita -->
+								<div class="form-group">
+									<label for="fecha">Fecha <small class="text-secondary">(requerido)</small></label>
+									<select type="date" class="form-control" id="fecha"
+										th:field="*{medicoHorario.horario.fecha}">
+										<option value="0">Seleccione una fecha</option>
+									</select>
+								</div>
+
+								<!-- Hora -->
+								<div class="form-group">
+									<label for="hora">Hora <small class="text-secondary">(requerido)</small></label>
+									<select class="form-control" id="hora" th:field="*{horario.id}">
+										<option value="0">Seleccione una hora</option>
+									</select>
+								</div>
+
+								<div class="form-group text-center">
+									<button class="btn btn-info" type="submit">
+										<i class="fa fa-check"></i> Guardar
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- wizard container -->
+	</div>
+	<div style="height: 20px;"></div>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+	<!-- código JS propio-->
+	<script type="text/javascript" src="/js/comboCitaMedica.js"></script>
+</body>
+
+</html>
