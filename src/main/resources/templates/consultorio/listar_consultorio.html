@@ -20,6 +20,7 @@
 								<th>Nombre</th>
 								<th>Descripción</th>
 								<th>Ubicación</th>
+								<!--<th>Médico</th>-->
 								<th>Estado</th>
 								<th th:if="${role == 'ROLE_ADMIN'}">Acciones</th>
 							</tr>
@@ -29,6 +30,7 @@
 								<td th:text="${consul.nombre}">Nombre</td>
 								<td th:text="${consul.descripcion}">Descripción</td>
 								<td th:text="${consul.ubicacion}">Ubicación</td>
+								<!--<td th:text="${consul.medico.persona.nombres}">Ubicación</td>-->
 								<td>
 									<span th:switch="${consul.estado}">
 										<span th:case="0">No disponible</span>
