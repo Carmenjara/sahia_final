@@ -1,14 +1,8 @@
 package ec.edu.utpl.smp.app.smpaplication.controllers;
 
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,18 +13,11 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ec.edu.utpl.smp.app.smpaplication.models.entities.CitaMedica;
-import ec.edu.utpl.smp.app.smpaplication.models.entities.CodeGenerator;
+import ec.edu.utpl.smp.app.smpaplication.models.entities.ConsultorioMedico;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.Consultorios;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.DatosEncapsulados;
-import ec.edu.utpl.smp.app.smpaplication.models.entities.Especialidad;
-import ec.edu.utpl.smp.app.smpaplication.models.entities.Horario;
-import ec.edu.utpl.smp.app.smpaplication.models.entities.Paciente;
-import ec.edu.utpl.smp.app.smpaplication.models.entities.Persona;
-import ec.edu.utpl.smp.app.smpaplication.models.entities.Roles;
-import ec.edu.utpl.smp.app.smpaplication.models.entities.Usuario;
+import ec.edu.utpl.smp.app.smpaplication.models.services.interfaces.IConsultorioMedicoService;
 import ec.edu.utpl.smp.app.smpaplication.models.services.interfaces.IConsultoriosService;
-import ec.edu.utpl.smp.app.smpaplication.models.services.interfaces.IMedicoService;
 
 @Controller
 @RequestMapping("/consultorio")
@@ -39,6 +26,9 @@ public class ConsultorioController {
 
 	@Autowired
 	private IConsultoriosService consultorioService;
+	
+	@Autowired
+	private IConsultorioMedicoService consultorioMedicoService;
 
 	/* -------------- Gestión Consultorios -------------- */
 
@@ -54,10 +44,11 @@ public class ConsultorioController {
 
 	@RequestMapping("/listar_consultorio")
 	public String verPaginaP(Model model) {
-		List<Consultorios> consultorios = consultorioService.findAllConsultoriosSinEstado();
 		
-		
-		model.addAttribute("listConsultorios", consultorios);
+		List<ConsultorioMedico> consultoriosAsignados = consultorioMedicoService.findConsultoriosWithMedico();	
+	    System.out.println("Total de consultorios: " + consultoriosAsignados.size());
+
+		model.addAttribute("consultoriosAsignados", consultoriosAsignados);
 		model.addAttribute("titulo", "Consultorios Registrados");
 		return "consultorio/listar_consultorio";
 	}
@@ -109,8 +100,8 @@ public class ConsultorioController {
 
 	@RequestMapping(value = "/guardar_consultorio_editado/{id}", method = RequestMethod.POST)
 	public String guardarConsultorioEditado(@PathVariable("id") int id,
-			@ModelAttribute("citaDTO") DatosEncapsulados consultorioDTO, RedirectAttributes flash,
-			SessionStatus status, Model model) {
+			@ModelAttribute("citaDTO") DatosEncapsulados consultorioDTO, RedirectAttributes flash, SessionStatus status,
+			Model model) {
 
 		Consultorios consultorio = consultorioDTO.getConsultorio();
 		Consultorios consultorioAnterior = consultorioService.findByIdConsultorio(consultorio.getId());
@@ -118,20 +109,22 @@ public class ConsultorioController {
 			flash.addFlashAttribute("error", "Error al guardar Consultorio.");
 			return "redirect:/consultorio/listar_consultorio";
 		} else if (consultorioAnterior.getEstado() == 0 && consultorio.getEstado() != 0) {
-			
+
 			DatosEncapsulados consultorioDTONew = new DatosEncapsulados();
 			consultorioDTONew.setConsultorio(consultorio);
-	        model.addAttribute("consultorioDTO", consultorioDTONew);
-	        model.addAttribute("error", "Consultorio no se puede inhabilitar, se encuentra asociado a Médico.");
+			model.addAttribute("consultorioDTO", consultorioDTONew);
+			model.addAttribute("error", "Consultorio no se puede inhabilitar, se encuentra asociado a Médico.");
 
 			return "consultorio/editar_consultorio";
 
-		}else if ((consultorioAnterior.getEstado() == 2 || consultorioAnterior.getEstado() == 1) && consultorio.getEstado() == 0) {
+		} else if ((consultorioAnterior.getEstado() == 2 || consultorioAnterior.getEstado() == 1)
+				&& consultorio.getEstado() == 0) {
 
 			DatosEncapsulados consultorioDTONew = new DatosEncapsulados();
 			consultorioDTONew.setConsultorio(consultorio);
-	        model.addAttribute("consultorioDTO", consultorioDTONew);
-	        model.addAttribute("error", "Consultorio no se puede indisponer directamente, se debe asociar a un Médico.");
+			model.addAttribute("consultorioDTO", consultorioDTONew);
+			model.addAttribute("error",
+					"Consultorio no se puede indisponer directamente, se debe asociar a un Médico.");
 
 			return "consultorio/editar_consultorio";
 
@@ -139,9 +132,6 @@ public class ConsultorioController {
 
 			consultorioService.save(consultorio);
 		}
-		
-		
-		
 
 		status.setComplete();
 		flash.addFlashAttribute("success", "Se editó el Consultorio de forma exitosa.");
@@ -170,9 +160,8 @@ public class ConsultorioController {
 
 		Consultorios consultorio = consultorioDTO.getConsultorio();
 		// Establecer estado de consultorio en 1, disponible
-		
 
-		if (consultorio ==null) {
+		if (consultorio == null) {
 			flash.addFlashAttribute("error", "Error al crear Consultorio.");
 			return "redirect:/consultorio/listar_consultorio";
 		} else {

@@ -2,6 +2,7 @@
 package ec.edu.utpl.smp.app.smpaplication.models.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -26,5 +27,7 @@ public interface IConsultorioMedicoRepository extends JpaRepository<ConsultorioM
     public int updateConsultorioId(int oldConsultorioId, int newConsultorioId, int medicoId, Date fecha);
 
 
+	@Query("SELECT c, m, cm.fecha FROM Consultorios c LEFT JOIN ConsultorioMedico cm ON c.id = cm.consultorio.id LEFT JOIN Medico m ON cm.medico.id = m.id")
+	List<Object[]> findConsultoriosWithMedico();
 
 }

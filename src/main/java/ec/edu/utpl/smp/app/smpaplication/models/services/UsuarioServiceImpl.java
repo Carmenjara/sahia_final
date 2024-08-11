@@ -1,5 +1,6 @@
 package ec.edu.utpl.smp.app.smpaplication.models.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import ec.edu.utpl.smp.app.smpaplication.models.dao.IRolesRepository;
 import ec.edu.utpl.smp.app.smpaplication.models.dao.IUsuarioRepository;
 import ec.edu.utpl.smp.app.smpaplication.models.dao.IUsuarioRolRepository;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.ConsultorioMedico;
+import ec.edu.utpl.smp.app.smpaplication.models.entities.Consultorios;
+import ec.edu.utpl.smp.app.smpaplication.models.entities.Medico;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.MedicoEspecialidad;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.Roles;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.Usuario;
@@ -166,6 +169,27 @@ public class UsuarioServiceImpl implements IUsuarioService, IRolesService, IUsua
 	@Override
 	public List<UsuarioRol> findByUsuarioId(int id) {
 		return usuarioRolRepository.findByUsuarioId(id);
+	}
+
+	@Override
+	public List<ConsultorioMedico> findConsultoriosWithMedico() {
+		List<Object[]> results = consultorioMedicoRepository.findConsultoriosWithMedico();
+		List<ConsultorioMedico> consultoriosWithMedico = new ArrayList<>();
+
+		for (Object[] result : results) {
+			Consultorios consultorio = (Consultorios) result[0];
+			Medico medico = (Medico) result[1]; // Puede ser null
+			Date fecha = (Date) result[2]; // Puede ser null
+
+			ConsultorioMedico consultorioMedico = new ConsultorioMedico();
+			consultorioMedico.setConsultorio(consultorio);
+			consultorioMedico.setMedico(medico);
+			consultorioMedico.setFecha(fecha);
+
+			consultoriosWithMedico.add(consultorioMedico);
+		}
+
+		return consultoriosWithMedico;
 	}
 
 }
