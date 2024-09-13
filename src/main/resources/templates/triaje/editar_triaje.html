@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<head th:replace="fragments/head :: head">
+		<title>Editar Triaje</title>
+	</head>
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 15px"></div>
+
+	<div class="container">
+		<div class="row bg-light rounded shadow-sm justify-content-center">
+			<div class="col-sm-8 align-self-center">
+				<div>
+					<h1 class="display-4 text-center" style="font-family: 'Bree Serif';">Editar Triaje</h1>
+					<hr class="bg-info">
+					<p class="text-center" style="font-family: 'Bree Serif';">Actualice
+						los campos solicitados:</p>
+				</div>
+				<form action="#" th:action="@{/triaje/guardar_triaje_editado/{id}(id=${triajeDTO.triaje.id})}"
+					th:object="${triajeDTO}" method="post">
+					<!-- Campos de Consultorio -->
+					<div class="row align-self-center" style="margin-bottom: 2%">
+
+						<div class="col-md-6" style="margin: auto">
+							<input type="text" id="id" hidden th:field="*{triaje.id}" />
+
+							<div class="form-group">
+								<label>Nombre<small class="text-secondary">(requerido)</small></label>
+								<input class="form-control" type="text" id="paciente" readonly
+									th:field="*{triaje.paciente.persona.nombres}" />
+							</div>
+							
+							<input type="text" id="paciente" hidden th:field="*{triaje.paciente.id}" />
+
+							<!-- Frecuencia Cardiaca -->
+							<div class="form-group">
+								<label for="frecuenciaCardiaca">Frecuencia Cardiaca <small
+										class="text-secondary">(requerido)</small></label>
+								<input type="text" id="frecuenciaCardiaca" class="form-control"
+									th:field="*{triaje.frecuenciaCardiaca}"
+									placeholder="Valores entre 60 - 100 latidos por minuto" maxlength="10" required />
+							</div>
+
+							<!-- Frecuencia Respiratoria -->
+							<div class="form-group">
+								<label for="frecuenciaRespiratoria">Frecuencia Respiratoria <small
+										class="text-secondary">(requerido)</small></label>
+								<input type="text" id="frecuenciaRespiratoria" class="form-control"
+									th:field="*{triaje.frecuenciaRespiratoria}"
+									placeholder="Valores entre 12 - 20 respiraciones por minuto" maxlength="10"
+									required />
+							</div>
+
+							<!-- Nivel Saturacion Oxigeno -->
+							<div class="form-group">
+								<label for="nivelSaturacionOxigeno">Nivel Saturación Oxígeno <small
+										class="text-secondary">(requerido)</small></label>
+								<input type="text" id="nivelSaturacionOxigeno" class="form-control"
+									th:field="*{triaje.nivelSaturacionOxigeno}"
+									placeholder="Valores entre 70 - 100 por ciento" maxlength="10" required />
+							</div>
+						</div>
+						<div class="col-md-6" style="margin: auto">
+
+							<!-- Presion Arterial -->
+							<div class="form-group">
+								<label for="presionArterial">Presión Arterial <small
+										class="text-secondary">(requerido)</small></label>
+								<input type="text" id="presionArterial" class="form-control"
+									th:field="*{triaje.presionArterial}" placeholder="Valores entre 80 - 129 mmHg"
+									maxlength="10" required />
+							</div>
+
+							<!-- Temperatura Corporal -->
+							<div class="form-group">
+								<label for="temperaturaCorporal">Temperatura Corporal <small
+										class="text-secondary">(requerido)</small></label>
+								<input type="text" id="temperaturaCorporal" class="form-control"
+									th:field="*{triaje.temperaturaCorporal}"
+									placeholder="Valores entre 12 - 40 grados centígrados" maxlength="10" required />
+							</div>
+
+
+							<!-- Estado - Prioridad -->
+							<div class="form-group">
+								<label for="enabled">Estado</label>
+								<div>
+									<select id="enabled" th:field="*{triaje.estado}" class="form-control">
+										<option value="Alto">Alto</option>
+										<option value="Medio">Medio</option>
+										<option value="Bajo">Bajo</option>
+									</select>
+								</div>
+							</div>
+
+
+						</div>
+						<div class="align-self-center" style="margin: auto">
+
+							<button id="guardarTriaje" class="btn btn-info" type="submit">
+								<i class="fa fa-check"></i> Guardar
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div style="height: 20px;"></div>
+	<footer th:replace="fragments/footer :: footer"> </footer>
+	<script type="text/javascript" src="/js/pacienteTriaje.js"></script>
+
+</body>
+
+</html>

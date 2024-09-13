@@ -50,7 +50,7 @@ public class TriajeController {
 	/* -------------- Crear Triaje-------------- */
 
 	@RequestMapping("/crear_triaje_emergencia")
-	public String mostrarCrearTriaje(Model model) {
+	public String mostrarCrearTriaje(Map<String, Object> model) {
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -66,8 +66,8 @@ public class TriajeController {
 		triajeDTO.setTriaje(triaje);
 		triajeDTO.setPaciente(paciente);
 
-		model.addAttribute("titulo", "Registrar Triaje");
-		model.addAttribute("triajeDTO", triajeDTO);
+		model.put("titulo", "Registrar Triaje");
+		model.put("triajeDTO", triajeDTO);
 
 		return "triaje/crear_triaje";
 	}
@@ -114,7 +114,7 @@ public class TriajeController {
 	}
 	
 	
-	/* -------------- Listar Especialidades -------------- */
+	/* -------------- Listar Emergencias -------------- */
 
 	@RequestMapping("/listar_emergencias")
 	public String verEmergencias(Model model) {
@@ -122,6 +122,48 @@ public class TriajeController {
 		model.addAttribute("emergencias", triajeService.getAllTriajes());
 		model.addAttribute("titulo", "Emergencias Registradas");
 		return "triaje/listar_triaje";
+	}
+	
+	/* -------------- Editar Triaje -------------- */
+
+	@RequestMapping("/editar_triaje/{id}")
+	public String mostrarEditarTriaje(@PathVariable("id") int id, Model model, RedirectAttributes flash) {
+		Triaje triaje = triajeService.get(id);
+		if (triaje == null) {
+			flash.addFlashAttribute("error", "No se encontró Triaje.");
+			return "redirect:/triaje/listar_emergencias";
+		} else {
+			DatosEncapsulados triajeDTO = new DatosEncapsulados();
+			triajeDTO.setTriaje(triaje);
+
+			model.addAttribute("triajeDTO", triajeDTO);
+
+			return "triaje/editar_triaje";
+		}
+	}
+	
+	@RequestMapping(value = "/guardar_triaje_editado/{id}", method = RequestMethod.POST)
+	public String guardarTriajeEditado(@PathVariable("id") int id,
+			@ModelAttribute("triajeDTO") DatosEncapsulados triajeDTO, RedirectAttributes flash,
+			SessionStatus status, Model model) {
+
+		Triaje triaje = triajeDTO.getTriaje();
+		Triaje triajeAnterior = triajeService.get(id);
+		if (triaje == null) {
+			flash.addFlashAttribute("error", "Error al guardar Triaje.");
+			return "redirect:/triaje/listar_emergencias";
+		}else {
+		
+
+			triaje.setFechaActualizacion(new Date());
+			triaje.setFechaCreacion(triajeAnterior.getFechaCreacion());
+			triajeService.save(triaje);
+		}
+
+		status.setComplete();
+		flash.addFlashAttribute("success", "Se editó el Triaje de forma exitosa.");
+		System.out.println("Datos Guardados");
+		return "redirect:/triaje/listar_emergencias";
 	}
 
 }

@@ -24,20 +24,20 @@ public class Triaje implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "frecuencia_cardiaca", nullable = false)
-	private int frecuenciaCardiaca;
+	@Column(nullable = false)
+	private Integer frecuenciaCardiaca;
 
 	@Column(name = "frecuencia_respiratoria", nullable = false)
-	private int frecuenciaRespiratoria;
+	private Integer frecuenciaRespiratoria;
 
 	@Column(name = "nivel_saturacion_oxigeno", nullable = false)
-	private int nivelSaturacionOxigeno;
+	private Integer nivelSaturacionOxigeno;
 
 	@Column(name = "presion_arterial", nullable = false)
-	private int presionArterial;
+	private Integer presionArterial;
 
 	@Column(name = "temperatura_corporal", nullable = false)
-	private int temperaturaCorporal;
+	private Integer temperaturaCorporal;
 
 	@Column(name = "estado", length = 10, nullable = false)
 	private String estado;
@@ -57,9 +57,9 @@ public class Triaje implements Serializable {
 	public Triaje() {
 	}
 
-	public Triaje(Integer id, int frecuenciaCardiaca, int frecuenciaRespiratoria, int nivelSaturacionOxigeno,
-			int presionArterial, int temperaturaCorporal, String estado, Date fechaCreacion, Date fechaActualizacion,
-			Paciente paciente) {
+	public Triaje(Integer id, Integer frecuenciaCardiaca, Integer frecuenciaRespiratoria,
+			Integer nivelSaturacionOxigeno, Integer presionArterial, Integer temperaturaCorporal, String estado,
+			Date fechaCreacion, Date fechaActualizacion, Paciente paciente) {
 		super();
 		this.id = id;
 		this.frecuenciaCardiaca = frecuenciaCardiaca;
@@ -73,8 +73,6 @@ public class Triaje implements Serializable {
 		this.paciente = paciente;
 	}
 
-	// Getters y setters
-
 	public Integer getId() {
 		return id;
 	}
@@ -83,43 +81,43 @@ public class Triaje implements Serializable {
 		this.id = id;
 	}
 
-	public int getFrecuenciaCardiaca() {
+	public Integer getFrecuenciaCardiaca() {
 		return frecuenciaCardiaca;
 	}
 
-	public void setFrecuenciaCardiaca(int frecuenciaCardiaca) {
+	public void setFrecuenciaCardiaca(Integer frecuenciaCardiaca) {
 		this.frecuenciaCardiaca = frecuenciaCardiaca;
 	}
 
-	public int getFrecuenciaRespiratoria() {
+	public Integer getFrecuenciaRespiratoria() {
 		return frecuenciaRespiratoria;
 	}
 
-	public void setFrecuenciaRespiratoria(int frecuenciaRespiratoria) {
+	public void setFrecuenciaRespiratoria(Integer frecuenciaRespiratoria) {
 		this.frecuenciaRespiratoria = frecuenciaRespiratoria;
 	}
 
-	public int getNivelSaturacionOxigeno() {
+	public Integer getNivelSaturacionOxigeno() {
 		return nivelSaturacionOxigeno;
 	}
 
-	public void setNivelSaturacionOxigeno(int nivelSaturacionOxigeno) {
+	public void setNivelSaturacionOxigeno(Integer nivelSaturacionOxigeno) {
 		this.nivelSaturacionOxigeno = nivelSaturacionOxigeno;
 	}
 
-	public int getPresionArterial() {
+	public Integer getPresionArterial() {
 		return presionArterial;
 	}
 
-	public void setPresionArterial(int presionArterial) {
+	public void setPresionArterial(Integer presionArterial) {
 		this.presionArterial = presionArterial;
 	}
 
-	public int getTemperaturaCorporal() {
+	public Integer getTemperaturaCorporal() {
 		return temperaturaCorporal;
 	}
 
-	public void setTemperaturaCorporal(int temperaturaCorporal) {
+	public void setTemperaturaCorporal(Integer temperaturaCorporal) {
 		this.temperaturaCorporal = temperaturaCorporal;
 	}
 
@@ -129,14 +127,6 @@ public class Triaje implements Serializable {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
-	}
-
-	public Paciente getPaciente() {
-		return paciente;
-	}
-
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
 	}
 
 	public Date getFechaCreacion() {
@@ -153,6 +143,14 @@ public class Triaje implements Serializable {
 
 	public void setFechaActualizacion(Date fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
+	}
+
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
 	}
 
 }

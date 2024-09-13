@@ -27,4 +27,53 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+	$(document).ready(function() {
+		$('#guardarTriaje').click(function(event) {
+			// Evita el envío del formulario si hay campos vacíos
+			var esValido = true;
+			var mensaje = "";
+
+			
+			var frecuenciaCardiaca = $('#frecuenciaCardiaca').val();
+			var frecuenciaRespiratoria = $('#frecuenciaRespiratoria').val();
+			var nivelSaturacionOxigeno = $('#nivelSaturacionOxigeno').val();
+			var presionArterial = $('#presionArterial').val();
+			var temperaturaCorporal = $('#temperaturaCorporal').val();
+
+		
+			if (!isInteger(frecuenciaCardiaca)) {
+				mensaje += "La frecuencia cardiaca debe ser un valor entero.\n";
+				esValido = false;
+			}
+			if (!isInteger(frecuenciaRespiratoria)) {
+				mensaje += "La frecuencia respiratoria debe ser un valor entero.\n";
+				esValido = false;
+			}
+			if (!isInteger(nivelSaturacionOxigeno)) {
+				mensaje += "El nivel de saturación de oxígeno debe ser un valor entero.\n";
+				esValido = false;
+			}
+			if (!isInteger(presionArterial)) {
+				mensaje += "La presión arterial debe ser un valor entero.\n";
+				esValido = false;
+			}
+			if (!isInteger(temperaturaCorporal)) {
+				mensaje += "La temperatura corporal debe ser un valor entero.\n";
+				esValido = false;
+			}
+
+			// Para controlar datos correctos antes de guardar
+			if (!esValido) {
+				alert(mensaje);
+				event.preventDefault();
+			}
+		});
+
+		// Función para verificar si una cadena es un número entero
+		function isInteger(value) {
+			return /^\d+$/.test(value);
+		}
+	});
+
 });

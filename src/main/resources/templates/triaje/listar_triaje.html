@@ -17,21 +17,29 @@
 						<thead>
 							<tr>
 							    <th hidden>ID</th>
-								<th>Frecuencia Cardiaca</th>
-								<th>Frecuencia Respiratoria</th>
-								<th>Nivel Saturación Oxigeno</th>
 								<th>Paciente</th>
+								<th>Edad</th>
+								<th>Género</th>
+								<th>Frec. Cardiaca</th>
+								<th>Frec. Respiratoria</th>
+								<th>Nivel Saturación Oxígeno</th>
+								<th>Presión Arterial</th>
+								<th>Temp. Corporal</th>
 								<th>Estado</th>
-								<th th:if="${role == 'ROLE_ADMIN'}" >Acciones</th>
+								<th>Acciones</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:each="triaje : ${emergencias}">
 								<td th:text="${triaje.id}" hidden>ID</td>
-								<td th:text="${triaje.frecuenciaCardiaca}">Frecuencia Cardiaca</td>
-								<td th:text="${triaje.frecuenciaRespiratoria}">Frecuencia Respiratoria</td>
-								<td th:text="${triaje.nivelSaturacionOxigeno}">Saturación Oxigeno</td>
-								<td th:text="${triaje.paciente.persona.nombres}">Paciente</td>
+								<td th:text="${triaje.paciente.persona.nombres+' '+triaje.paciente.persona.apellidos}">Paciente</td>
+								<td th:text="${triaje.paciente.edad}">Edad</td>
+								<td th:text="${triaje.paciente.persona.genero}">Género</td>
+								<td th:text="${triaje.frecuenciaCardiaca+' lpm'}">Frec. Cardiaca</td>
+								<td th:text="${triaje.frecuenciaRespiratoria+' rpm'}">Frec. Respiratoria</td>
+								<td th:text="${triaje.nivelSaturacionOxigeno+'%'}">Nivel Saturación Oxígeno</td>
+								<td th:text="${triaje.presionArterial+' mmHg'}">Presión Arterial</td>
+								<td th:text="${triaje.temperaturaCorporal+' °C'}">Temp. Corporal</td>
 								<td>
 									<span th:switch="${triaje.estado}">
 										<span th:case="Alto">Alto</span>
@@ -41,10 +49,10 @@
 									</span>
 								</td>
 								
-								<td th:if="${role == 'ROLE_ADMIN' }" style="text-align: center">
+								<td style="text-align: center">
 									 <a class="btn btn-success"
 										style="margin: auto; margin-right: -2%; text-align: center; position: relative; border-top-right-radius: 0; border-bottom-right-radius: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; display: inline-block;"
-										title="Modificar triaje" th:href="@{'/triaje/editar_triaje/'+ ${triaje.id}}"><i
+										title="Modificar Triaje" th:href="@{'/triaje/editar_triaje/'+ ${triaje.id}}"><i
 											class="fa fa-pen"></i></a>
 									<a class="btn btn-danger"
 										style="margin: auto; margin-right: -1%;margin-top: 1%; text-align: center; position: relative; border-top-right-radius: 0; border-bottom-right-radius: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; display: inline-block;"
