@@ -76,6 +76,8 @@
 							</div>
 						</li>
 
+
+
 						<li th:if="${role == 'ROLE_PACIENTE'}" class="nav-item dropdown"><a
 								class="nav-link dropdown-toggle" href="#" id="navbarDropdownVehiculos" role="button"
 								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
@@ -111,9 +113,22 @@
 									class="fa-solid fa-hospital"></i> | Consultorios </a>
 
 						</li>
-						<li th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}" class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
-								id="navbarDropdownDescentralizacion" role="button" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-plus"></i> |
+
+						<li th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}" class="nav-item dropdown"><a
+								class="nav-link dropdown-toggle" href="#" id="navbarDropdownVehiculos" role="button"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+									class="fa-solid fa-calendar-check"></i> | Triaje </a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" th:href="@{/triaje/crear_triaje_emergencia}">Registrar
+									triaje</a> <a class="dropdown-item"
+									th:href="@{/triaje/listar_emergencias}">Listar
+									emergencias</a>
+							</div>
+						</li>
+						<li th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}" class="nav-item dropdown"><a
+								class="nav-link dropdown-toggle" href="#" id="navbarDropdownDescentralizacion"
+								role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+									class="fa-solid fa-circle-plus"></i> |
 								Otros </a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<!--<a class="dropdown-item" th:href="@{/descentralizacion/inicio_distrito}">Asistencia</a>
@@ -131,15 +146,17 @@
 							</div>
 						</li>
 
-						<li th:if="${role == 'ROLE_PACIENTE'}"class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
-								id="navbarDropdownDescentralizacion" role="button" data-toggle="dropdown"
-								aria-haspopup="true" aria-expanded="false"><i class="fa-solid fa-circle-plus"></i> |
+						<li th:if="${role == 'ROLE_PACIENTE'}" class="nav-item dropdown"><a
+								class="nav-link dropdown-toggle" href="#" id="navbarDropdownDescentralizacion"
+								role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
+									class="fa-solid fa-circle-plus"></i> |
 								Otros </a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<h6 class="dropdown-header">TRATAMIENTO</h6>
-								<a class="dropdown-item" th:href="@{/historialmedico/listar_historial_paciente}">Mi Historial
-									Médico</a> <a class="dropdown-item"
-									th:href="@{/receta/listar_recetas_paciente}">Mis Recetas</a>
+								<a class="dropdown-item" th:href="@{/historialmedico/listar_historial_paciente}">Mi
+									Historial
+									Médico</a> <a class="dropdown-item" th:href="@{/receta/listar_recetas_paciente}">Mis
+									Recetas</a>
 							</div>
 						</li>
 

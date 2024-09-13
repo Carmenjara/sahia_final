@@ -31,6 +31,8 @@ public class DatosEncapsulados {
 	private List<Long> medicamentoIds;
 	private List<MedicoEspecialidad> medicoEspecialidades;
 
+	private Triaje triaje;
+
 	private CitaMedica cita;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -45,7 +47,7 @@ public class DatosEncapsulados {
 			Especialidad especialidad, MedicoEspecialidad medicoEspecialidad, HistorialMedico historial, Receta receta,
 			Medicamento medicamento, MedicamentoReceta medicamentoReceta, MedicamentoRecetaId medicamentoRecetaId,
 			Factura factura, Long citaId, List<Integer> especialidadesSeleccionadas, List<Long> medicamentoIds,
-			List<MedicoEspecialidad> medicoEspecialidades, CitaMedica cita, LocalDate fechaNacimiento) {
+			List<MedicoEspecialidad> medicoEspecialidades, Triaje triaje, CitaMedica cita, LocalDate fechaNacimiento) {
 		super();
 		this.persona = persona;
 		this.usuario = usuario;
@@ -71,6 +73,7 @@ public class DatosEncapsulados {
 		this.especialidadesSeleccionadas = especialidadesSeleccionadas;
 		this.medicamentoIds = medicamentoIds;
 		this.medicoEspecialidades = medicoEspecialidades;
+		this.triaje = triaje;
 		this.cita = cita;
 		this.fechaNacimiento = fechaNacimiento;
 	}
@@ -281,6 +284,14 @@ public class DatosEncapsulados {
 
 	public void setMedicoEspecialidades(List<MedicoEspecialidad> medicoEspecialidades) {
 		this.medicoEspecialidades = medicoEspecialidades;
+	}
+
+	public Triaje getTriaje() {
+		return triaje;
+	}
+
+	public void setTriaje(Triaje triaje) {
+		this.triaje = triaje;
 	}
 
 }
