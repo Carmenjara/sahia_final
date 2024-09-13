@@ -24,7 +24,7 @@
 								<th>Hora</th>
 								<th>Tipo</th>
 								<th>Estado</th>
-								<th th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}" >Acción</th>
+								<th th:if="${role == 'ROLE_ADMIN' or (role == 'ROLE_MEDICO' and usuarioActual.id == idUsuario)}" >Acción</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -42,7 +42,7 @@
 										<span th:case="3">Cancelado</span>
 									</span>
 								</td>
-								<td th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}" style="text-align: center">
+								<td th:if="${role == 'ROLE_ADMIN' or (role == 'ROLE_MEDICO' and usuarioActual.id == idUsuario)}" style="text-align: center">
 
 									<a class="btn btn-danger"
 										style="margin: auto; margin-left: -4%; padding-left: 10%; padding-right: 10%; border-top-left-radius: 0; border-bottom-left-radius: 0; display: inline-block;"

@@ -12,10 +12,10 @@
 			Isidro Ayora</h1>
 		<hr class="bg-info">
 		<p class="text-center" style="font-family: 'Bree Serif';">Elija una opción:</p>
-		<div
-			class="row bg-light rounded">
+		<div class="row bg-light rounded">
 			<div class="col-lg-6 rounded text-center" style="position: relative; padding-top: 2%; margin-bottom: 2%;">
-				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}"class="row" style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
 					<a th:href="@{/pacientes/listar_pacientes}" class="btn btn-info btn-lg shadow" title="Pacientes"
 						style="width: 85%;"><i class="fa-solid fa-hospital-user"></i> |
 						Pacientes </a>
@@ -33,12 +33,22 @@
 						style="width: 85%;"><i class="fa-solid fa-users"></i>
 						| Usuarios </a>
 				</div>
-				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row"
 					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
 					<a th:href="@{/especialidad/inicio_especialidad}" class="btn btn-info btn-lg shadow"
 						title="Especialidades" style="width: 85%;"><i class="fa-solid fa-rectangle-list"></i> |
 						Especialidades </a>
 				</div>
+
+
+				<div th:if="${role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/especialidad/listar_especialidad}" class="btn btn-info btn-lg shadow"
+						title="Especialidades" style="width: 85%;"><i class="fa-solid fa-rectangle-list"></i> |
+						Especialidades </a>
+				</div>
+
+
 				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
 					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
 					<a th:href="@{/horario/registrar_horario}" class="btn btn-info btn-lg shadow" title="Horarios"
@@ -55,15 +65,29 @@
 						style="width: 85%;"><i class="fa-solid fa-user-doctor"></i> |
 						Médicos </a>
 				</div>
-				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
+				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE'}" class="row"
 					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
 					<a th:href="@{/citamedica/inicio_citamedica}" class="btn btn-info btn-lg shadow"
 						title="Citas Médicas" style="width: 85%;"><i class="fa-solid fa-calendar-check"></i> | Citas
 						Médicas </a>
 				</div>
-				<div th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_PACIENTE' or role == 'ROLE_MEDICO'}" class="row"
+
+				<div th:if="${role == 'ROLE_MEDICO'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/citamedica/mostrar_citamedica}" class="btn btn-info btn-lg shadow"
+						title="Mostrar Citas Médicas" style="width: 85%;"><i class="fa fa-list-alt"></i> | Mostrar Citas
+						Médicas </a>
+				</div>
+
+				<div th:if="${role == 'ROLE_ADMIN'}" class="row"
 					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
 					<a th:href="@{/consultorio/inicio_consultorio}" class="btn btn-info btn-lg shadow"
+						title="Consultorios" style="width: 85%;"><i class="fa-solid fa-hospital"></i> |
+						Consultorios </a>
+				</div>
+				<div th:if="${role == 'ROLE_MEDICO' or role == 'ROLE_PACIENTE'}" class="row"
+					style="margin-left: 8%; margin-top: 2%; margin-bottom: 4%;">
+					<a th:href="@{/consultorio/listar_consultorio}" class="btn btn-info btn-lg shadow"
 						title="Consultorios" style="width: 85%;"><i class="fa-solid fa-hospital"></i> |
 						Consultorios </a>
 				</div>

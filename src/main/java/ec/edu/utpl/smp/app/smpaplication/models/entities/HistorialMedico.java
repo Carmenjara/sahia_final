@@ -20,8 +20,9 @@ public class HistorialMedico implements Serializable {
 	@Column(name = "examenes", nullable = false, length = 255)
 	private String examenes;
 
-	@Column(name = "proximo_control", nullable = false)
-	private int proximoControl;
+	@ManyToOne
+	@JoinColumn(name = "proximo_control")
+	private Horario proximoControl;
 
 	@ManyToOne
 	@JoinColumn(name = "cita_medica_id")
@@ -30,7 +31,7 @@ public class HistorialMedico implements Serializable {
 	public HistorialMedico() {
 	}
 
-	public HistorialMedico(int id, String diagnostico, String examenes, int proximoControl, CitaMedica citaMedica) {
+	public HistorialMedico(int id, String diagnostico, String examenes, Horario proximoControl, CitaMedica citaMedica) {
 		super();
 		this.id = id;
 		this.diagnostico = diagnostico;
@@ -63,11 +64,11 @@ public class HistorialMedico implements Serializable {
 		this.examenes = examenes;
 	}
 
-	public int getProximoControl() {
+	public Horario getProximoControl() {
 		return proximoControl;
 	}
 
-	public void setProximoControl(int proximoControl) {
+	public void setProximoControl(Horario proximoControl) {
 		this.proximoControl = proximoControl;
 	}
 

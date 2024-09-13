@@ -1,5 +1,7 @@
 package ec.edu.utpl.smp.app.smpaplication.models.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,16 @@ public class RecetaServiceImpl implements IRecetaService {
 	public void delete(Integer id) {
 		recetaRepository.deleteById(id);
 
+	}
+
+	@Override
+	public List<Receta> getAllRecetas() {
+		return recetaRepository.getAllRecetas();
+	}
+
+	@Override
+	public List<Receta> getAllRecetaPorPaciente(int idPaciente) {
+		return recetaRepository.getAllRecetaPorPaciente(idPaciente);
 	}
 
 }

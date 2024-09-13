@@ -9,7 +9,8 @@ import ec.edu.utpl.smp.app.smpaplication.models.entities.Especialidad;
 
 @Repository
 public interface IEspecialidadRepository extends JpaRepository<Especialidad, Integer> {
-	@Query("SELECT r.id, r.nombre, r.descripcion, r.estado FROM Especialidad r where r.estado=1")
+	//Todas las especialidades asignadas a medico
+	@Query("SELECT r.id, r.nombre, r.descripcion, r.estado FROM Especialidad r where r.estado=0")
 	List<Object[]> findAllEspecialidades();
 
 	@Query("SELECT r.id, r.nombre, r.descripcion, r.estado FROM Especialidad r")

@@ -80,6 +80,9 @@ public class CitaMedicaController {
 
 	@Autowired
 	private IHistoriaMedicoService historiaMedicoService;
+	
+	@Autowired
+	private IHistoriaMedicoService historialMedicoService;
 
 	/* -------------- Gestión Cita Medica -------------- */
 
@@ -526,7 +529,11 @@ public class CitaMedicaController {
 			citaDTO.setMedicoHorario(medicoHorario);
 			citaDTO.setMedico(medico);
 			citaDTO.setHistorial(historia);
+			
+			//Se obtiene historial del paciente que se va atender
+			List<HistorialMedico> historialMedico = historialMedicoService.getAllHistorialMedicoPorPaciente(citaDTO.getCita().getPaciente().getId());
 
+	        model.addAttribute("historialMedico", historialMedico);
 			model.addAttribute("citaDTO", citaDTO);
 			model.addAttribute("medicamentos", medicamentos);
 
@@ -565,7 +572,7 @@ public class CitaMedicaController {
 			receta.setCitaMedica(cita);
 			recetaService.save(receta);
 
-			historia.setProximoControl(horario.getId());
+			historia.setProximoControl(horario);
 			historia.setCitaMedica(cita);
 			historiaMedicoService.save(historia);
 

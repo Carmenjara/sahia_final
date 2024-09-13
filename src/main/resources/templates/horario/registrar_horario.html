@@ -35,7 +35,7 @@
 								<td th:text="${usuario.persona.telefono}">Teléfono</td>
 								<td th:text="${usuario.persona.correo}">Correo</td>
 								<td style="text-align: center">
-									<button th:if="${role == 'ROLE_ADMIN' or role == 'ROLE_MEDICO'}" class="btn btn-primary" style="margin-right: 1%;" title="Agregar Horario"
+									<button th:if="${role == 'ROLE_ADMIN' or (role == 'ROLE_MEDICO' and usuarioActual.id == usuario.id)}" class="btn btn-primary" style="margin-right: 1%;" title="Agregar Horario"
 										data-toggle="modal" data-target="#createHorarioModal"
 										th:data-id="${usuario.id}">
 										<i class="fa-regular fa-calendar-plus"></i>

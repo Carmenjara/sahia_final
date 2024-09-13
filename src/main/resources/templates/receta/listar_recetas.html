@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/datatables/head_datatables :: head">
+
+<body>
+	<header th:replace="fragments/header :: header"></header>
+	<div style="height: 25px"></div>
+	<!--Ejemplo tabla con DataTables-->
+	<div class="container">
+		<h1 class="display-4" style="font-family: 'Bree Serif';">Recetas de Pacientes</h1>
+		<hr class="bg-info">
+		<div class="row">
+			<div class="col-lg-12" style="position: relative">
+				<div class="table-responsive">
+					<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+						<thead>
+							<tr>
+								<th>ID. Paciente</th>
+								<th>Paciente</th>
+								<th>Motivo</th>
+								<th>Fecha Cita</th>
+								<th>Médico</th>
+								<th>Especialidad</th>
+								<th>Indicaciones</th>
+								<th>Duración Tratamiento</th>
+								<th>Frecuencia Tratamiento</th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="hm : ${recetas}">
+								<td th:text="${hm.citaMedica.paciente.persona.identificacion}">ID. Paciente</td>
+								<td
+									th:text="${hm.citaMedica.paciente.persona.nombres+' '+hm.citaMedica.paciente.persona.apellidos}">
+									Paciente</td>
+								<td th:text="${hm.citaMedica.motivo}">Motivo</td>
+								<td th:text="${hm.citaMedica.horario.fecha+' '+hm.citaMedica.horario.hora}">Fecha Cita
+								</td>
+								<td
+									th:text="${hm.citaMedica.medico.persona.nombres+' '+hm.citaMedica.medico.persona.apellidos}">
+									Médico</td>
+								<td th:text="${hm.citaMedica.especialidad.nombre}">Especialidad</td>
+								<td th:text="${hm.indicaciones}">Indicaciones</td>
+								<td th:text="${hm.duracionTratamiento}">Duración Tratamiento</td>
+								<td th:text="${hm.frecuenciaTratamiento}">Frecuencia Tratamiento</td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="fragments/datatables/footer_datatables :: footer"></footer>
+	<!-- código JS propìo-->
+	<script type="text/javascript" src="../js/datatables_main.js"></script>
+</body>
+
+</html>

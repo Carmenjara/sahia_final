@@ -1,5 +1,7 @@
 package ec.edu.utpl.smp.app.smpaplication.models.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,16 @@ public class HistoriaMedicoServiceImpl implements IHistoriaMedicoService {
 	public void delete(Integer id) {
 		historiMedicoRepository.deleteById(id);
 
+	}
+
+	@Override
+	public List<HistorialMedico> getAllHistorialMedico() {
+		return historiMedicoRepository.getAllHistorialMedico();
+	}
+
+	@Override
+	public List<HistorialMedico> getAllHistorialMedicoPorPaciente(int idPaciente) {
+		return historiMedicoRepository.getAllHistorialMedicoPorPaciente(idPaciente);
 	}
 
 }

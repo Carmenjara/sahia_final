@@ -4,6 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +35,12 @@ public class HorarioController {
 
 	@RequestMapping("/registrar_horario")
 	public String resgistrarHorario(Model model) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		Usuario usuarioActual = usuarioService.findByUsername(username);
+
+		model.addAttribute("usuarioActual", usuarioActual);
 		model.addAttribute("titulo", "Registrar Horario");
 		model.addAttribute("listUsuarios", usuarioService.findAllMedicos());
 		return "horario/registrar_horario";
@@ -64,6 +73,11 @@ public class HorarioController {
 		if (usuario == null) {
 			return "redirect:/horario/registrar_horario";
 		}
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		Usuario usuarioActual = usuarioService.findByUsername(username);
+
+		model.addAttribute("usuarioActual", usuarioActual);
 		model.addAttribute("usuarioDTO", usuario.getPersona());
 		model.addAttribute("idUsuario", usuario.getId());
 		model.addAttribute("titulo", "Registrar Horario");
