@@ -11,6 +11,8 @@ public interface IPersonaService {
 	public Persona get(Integer id);
 
 	public void delete(Integer id);
+	
+	public Persona findByIdP(int id);
 
 	/*
 	 * Cuando se trabaja con inyección de dependencias, se debe trabajar con

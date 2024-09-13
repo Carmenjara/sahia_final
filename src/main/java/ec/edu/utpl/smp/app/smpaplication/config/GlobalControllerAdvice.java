@@ -12,17 +12,16 @@ import java.util.Collection;
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-            String role = authorities.isEmpty() ? "" : authorities.iterator().next().getAuthority();
+	@ModelAttribute
+	public void addAttributes(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated()) {
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			String role = authorities.isEmpty() ? "" : authorities.iterator().next().getAuthority();
 
-            model.addAttribute("role", role);
-            // Puedes agregar más atributos si es necesario
-            // Ejemplo: model.addAttribute("username", username);
-        }
-    }
+			model.addAttribute("role", role);
+			// Puedes agregar más atributos si es necesario
+			// Ejemplo: model.addAttribute("username", username);
+		}
+	}
 }

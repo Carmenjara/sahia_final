@@ -11,5 +11,8 @@ public interface IPersonaRepository extends JpaRepository<Persona, Integer> {
 	// Obtener persona por cédula
 	@Query(value = "SELECT id,identificacion,nombres, apellidos, correo,fechaNacimiento, genero FROM Persona WHERE identificacion=:identificacion", nativeQuery = true)
 	public Persona findByCedulapersona(Long identificacion);
+	
+	@Query(value = "SELECT * FROM Persona WHERE id=:id", nativeQuery = true)
+	public Persona findByIdP(int id);
 
 }

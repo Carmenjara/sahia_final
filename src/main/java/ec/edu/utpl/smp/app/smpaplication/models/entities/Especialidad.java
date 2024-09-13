@@ -34,6 +34,7 @@ public class Especialidad implements Serializable {
 	private Date fecha_creacion;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "fecha_modificacion")
 	private Date fecha_modificacion;
 
 	@Column(length = 255, nullable = false)

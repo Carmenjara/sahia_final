@@ -1,17 +1,12 @@
 package ec.edu.utpl.smp.app.smpaplication.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -30,7 +25,7 @@ public class UsuarioServiceImplTests {
 	@InjectMocks
 	private UsuarioServiceImpl serviceUserMock;
 
-	private Usuario objUser = new Usuario();
+	// private Usuario objUser = new Usuario();
 
 	private List<Usuario> listUsuarios = new ArrayList<>();
 

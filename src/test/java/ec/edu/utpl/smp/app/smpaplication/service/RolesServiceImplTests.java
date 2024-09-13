@@ -1,6 +1,5 @@
 package ec.edu.utpl.smp.app.smpaplication.service;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -15,7 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ec.edu.utpl.smp.app.smpaplication.models.dao.IRolesRepository;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.Roles;
-import ec.edu.utpl.smp.app.smpaplication.models.entities.Usuario;
 import ec.edu.utpl.smp.app.smpaplication.models.services.RolesServiceImpl;
 
 @SpringBootTest
@@ -44,7 +42,7 @@ public class RolesServiceImplTests {
 	}
 
 	public void objetos() {
-		Usuario objUser = new Usuario();
+		// Usuario objUser = new Usuario();
 		// objRoles.setRoles_id(Long.valueOf(1));
 		// objRoles.setRol("ADMIN");
 		// objRoles.setUsuarios_id(objUser.getUsuarios_id().intValue());

@@ -63,7 +63,25 @@ public class EspecialidadController {
 
 		// Solo se inhabilitan Especialidades que no estan siendo usados
 		if (especialidad.getEstado() == 0) {
-			flash.addFlashAttribute("error", "Especialidad no se puede inhabilitar, se encuentra asociada a Médico.");
+			
+			
+			Usuario usuario = new Usuario();
+
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			if (authentication != null) {
+				Object principal = authentication.getPrincipal();
+				if (principal instanceof UserDetails) {
+					UserDetails userDetails = (UserDetails) principal;
+					usuario = usuarioService.findByUsername(userDetails.getUsername());
+				}
+			}
+			// Establecer estado en 2 como Inhabilitado
+			especialidad.setEstado(2);
+			especialidad.setUsuario(usuario);
+			especialidad.setFechaModificacion(new Date());
+			especialidadService.save(especialidad);
+			
+			flash.addFlashAttribute("error", "Especialidad se inhabilitó, aunque se encuentra asociada a Médico.");
 			return "redirect:/especialidad/listar_especialidad";
 		} else if (especialidad.getEstado() == 2) {
 			flash.addFlashAttribute("error", "Especialidad ya se encuentra inhabilitada.");
@@ -122,7 +140,7 @@ public class EspecialidadController {
 			return "redirect:/especialidad/listar_especialidad";
 		}
 		
-		// Solo se inhabilitan consultorios que no estan siendo usados
+		// Solo se inhabilitan especialidades que no estan siendo usadas
 		if (especialidadAnterior.getEstado() == 0 && especialidad.getEstado() != 0) {
 			
 			DatosEncapsulados especialidadDTONew = new DatosEncapsulados();

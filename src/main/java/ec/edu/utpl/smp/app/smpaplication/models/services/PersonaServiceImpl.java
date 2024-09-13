@@ -11,28 +11,33 @@ import ec.edu.utpl.smp.app.smpaplication.models.services.interfaces.IPersonaServ
 public class PersonaServiceImpl implements IPersonaService {
 
 	@Autowired
-	private IPersonaRepository PersonaRepository;
+	private IPersonaRepository personaRepository;
 
 	@Override
 	public Iterable<Persona> getAllPersonas() {
-		return PersonaRepository.findAll();
+		return personaRepository.findAll();
 	}
 
 	@Override
 	public void save(Persona persona) {
-		PersonaRepository.save(persona);
+		personaRepository.save(persona);
 
 	}
 
 	@Override
 	public Persona get(Integer id) {
-		return PersonaRepository.findById(id).get();
+		return personaRepository.findById(id).get();
 	}
 
 	@Override
 	public void delete(Integer id) {
-		PersonaRepository.deleteById(id);
+		personaRepository.deleteById(id);
 
+	}
+
+	@Override
+	public Persona findByIdP(int id) {
+		return personaRepository.findByIdP(id);
 	}
 
 }

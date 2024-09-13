@@ -2,10 +2,12 @@ package ec.edu.utpl.smp.app.smpaplication.controllers;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -104,7 +106,7 @@ public class UsuarioController {
 		List<Roles> roles = rolesService.findAllRoles(); // Obtener la lista de roles
 		List<Consultorios> consultorios = consultoriosService.findAllConsultorios(); // Obtener la lista de consultorios
 		List<Especialidad> especialidades = especialidadService.findAllEspecialidadesSinEstado(); // Obtener la lista de
-																							// especialdiades
+		// especialdiades
 
 		model.addAttribute("roles", roles);
 		model.addAttribute("consultorios", consultorios);
@@ -142,11 +144,6 @@ public class UsuarioController {
 
 		UsuarioRol usuarioRol = usuarioDTO.getUserRol();
 		ConsultorioMedico consultorioMedico = usuarioDTO.getConsultorioMedico();
-		Consultorios consultorio = consultoriosService.findByIdConsultorio(consultorioMedico.getConsultorio().getId());
-
-		MedicoEspecialidad medicoEspecialidad = usuarioDTO.getMedicoEspecialidad();
-		Especialidad especialidad = especialidadService
-				.findByIdEspecialidad(medicoEspecialidad.getEspecialidad().getId());
 
 		// Verificar que el campo rol no sea vacío
 		if (result.hasErrors() || usuarioDTO.getUserRol().getRol().getId() == 0) {
@@ -158,12 +155,8 @@ public class UsuarioController {
 			return "usuario/crear_usuario";
 		}
 
-		else
-
-		// si usuario existe se redirecciona al mismo formulario con la data
-		// preingresada
+		// Verificar si el nombre de usuario ya existe
 		if (usuarioService.existeUsuario(usuario.getUsername())) {
-
 			model.addAttribute("error", "El nombre de usuario ya está en uso. Pruebe con otro.");
 			model.addAttribute("usuarioDTO", usuarioDTO);
 
@@ -172,7 +165,6 @@ public class UsuarioController {
 			flash.addFlashAttribute("error", "El nombre de usuario ya está en uso.");
 			return "usuario/crear_usuario"; // Mostrar mensaje de error en la misma página
 		} else {
-
 			// Guardar Persona
 			personaService.save(persona);
 
@@ -182,7 +174,6 @@ public class UsuarioController {
 			// Encriptar clave con Bcrypt
 			String hashedPassword = passwordEncoder.encode(usuario.getPassword());
 			usuario.setPassword(hashedPassword);
-			// Establecer usuario como activo
 			usuario.setEnabled(1);
 			usuarioService.save(usuario);
 
@@ -192,55 +183,51 @@ public class UsuarioController {
 			usuarioRol.setUsuario(usuario);
 			usuarioRolService.save(usuarioRol);
 
-			if (usuarioRol.getRol().getId() == 3) {
+			if (usuarioRol.getRol().getId() == 3) { // Si es un médico
 				Medico medico = new Medico();
 				medico.setPersona(persona);
+				medico.setEstado(1);
 				medicoService.save(medico);
 
-				System.out.println(medico.getId() + " medico.getId()");
-				System.out.println(consultorioMedico.getConsultorio() + " consultorioMedico");
+				// Manejar el Consultorio
+				Consultorios consultorio = consultoriosService
+						.findByIdConsultorio(consultorioMedico.getConsultorio().getId());
+				consultorio.setEstado(0); // Consultorio ocupado
+				consultoriosService.save(consultorio);
 
-				System.out.println("El consultorio a Modificar es: " + consultorio.getId());
-
-				consultorio.setEstado(0); // Se Establece consultorio como ocupado 0
-
-				// Crear y guardar UsuarioRol
 				ConsultorioMedicoId consultorioMedicoId = new ConsultorioMedicoId(
 						consultorioMedico.getConsultorio().getId(), medico.getId());
 				consultorioMedico.setId(consultorioMedicoId);
 				consultorioMedico.setMedico(medico);
-				// Establecer fecha del sistema
-
 				consultorioMedico.setFecha(new Date());
 				consultorioMedicoService.save(consultorioMedico);
-				consultoriosService.save(consultorio);
 
-				especialidad.setEstado(0); // Se Establece consultorio como ocupado 0
+				// Guardar las especialidades seleccionadas
+				for (Integer especialidadId : usuarioDTO.getEspecialidadesSeleccionadas()) {
+					Especialidad especialidad = especialidadService.findByIdEspecialidad(especialidadId);
 
-				// Crear y guardar UsuarioRol
-				MedicoEspecialidadId medicoEspecialidadId = new MedicoEspecialidadId(medico.getId(),
-						medicoEspecialidad.getEspecialidad().getId());
-				medicoEspecialidad.setId(medicoEspecialidadId);
-				medicoEspecialidad.setMedico(medico);
-				// Establecer fecha del sistema
+					MedicoEspecialidad medicoEspecialidad = new MedicoEspecialidad();
+					MedicoEspecialidadId medicoEspecialidadId = new MedicoEspecialidadId(medico.getId(),
+							especialidadId);
+					medicoEspecialidad.setId(medicoEspecialidadId);
+					medicoEspecialidad.setMedico(medico);
+					medicoEspecialidad.setEspecialidad(especialidad);
 
-				// medicoEspecialidad.setFecha(new Date());
-				medicoEspecialidadService.save(medicoEspecialidad);
-				especialidadService.save(especialidad);
+					medicoEspecialidadService.save(medicoEspecialidad);
 
-				// se ingresa un Paciente
-			} else if (usuarioRol.getRol().getId() == 4) {
+					especialidad.setEstado(0); // Especialidad ocupada
+					especialidadService.save(especialidad);
+				}
+
+			} else if (usuarioRol.getRol().getId() == 4) { // Si es un paciente
 				Paciente pacienteNuevo = new Paciente();
 				pacienteNuevo.setPersona(persona);
 				pacienteService.save(pacienteNuevo);
-
 			}
-			// System.out.println(consultorioMedico);
 
 			status.setComplete();
 			flash.addFlashAttribute("success",
 					"El usuario para " + persona.getNombres() + " se registró correctamente.");
-			System.out.println("Datos Guardados");
 			return "redirect:/usuarios/listar_usuarios";
 		}
 	}
@@ -251,46 +238,67 @@ public class UsuarioController {
 	public String mostarEditarUsuarioRol(@PathVariable("id") int id, Model model, RedirectAttributes flash) {
 		Usuario usuario = usuarioService.findById(id);
 		if (usuario == null) {
-			flash.addFlashAttribute("error", "Usuario no exite para Editar, por favor revise.");
+			flash.addFlashAttribute("error", "Usuario no existe para Editar, por favor revise.");
 			return "redirect:/usuarios/listar_usuarios";
 		}
 
-		List<Roles> roles = rolesService.findAllRoles(); // Asegúrate de tener este método en tu servicio
+		List<Roles> roles = rolesService.findAllRoles();
 		List<Consultorios> consultorios = new ArrayList<Consultorios>();
 		List<Especialidad> especialidades = new ArrayList<Especialidad>();
 		DatosEncapsulados usuarioDTO = new DatosEncapsulados();
 		usuarioDTO.setUsuario(usuario);
 
-		// Obtener y setear el UsuarioRol asociado al Usuario
-		UsuarioRol userRol = usuarioRolService.findByIdUsuarioRol(usuario.getId()); // Si hay solo un rol
-																					// por usuario
+		UsuarioRol userRol = usuarioRolService.findByIdUsuarioRol(usuario.getId());
 		if (userRol == null) {
-			userRol = new UsuarioRol(); // O inicializarlo de alguna manera adecuada
+			userRol = new UsuarioRol();
 		}
 		usuarioDTO.setUserRol(userRol);
 		usuarioDTO.setPersona(usuario.getPersona());
 		boolean mostrarConsultorio = false;
 
 		if (userRol.getRol().getId() == 3) {
-			mostrarConsultorio = true; // Cambia esta lógica según tu necesidad
+			mostrarConsultorio = true;
 			usuarioDTO.setMedico(medicoService.findByUsuarioId(usuario.getId()));
+
 			usuarioDTO.setConsultorioMedico(consultorioMedicoService.findByMedicoId(usuarioDTO.getMedico().getId()));
-			usuarioDTO.setMedicoEspecialidad(
-					medicoEspecialidadService.findByMedicoEspecialidadId(usuarioDTO.getMedico().getId()));
 
-			consultorios.add(usuarioDTO.getConsultorioMedico().getConsultorio());
-			especialidades.add(usuarioDTO.getMedicoEspecialidad().getEspecialidad());
+			// Se valida que consultorio no este null, por si no tiene asignado
+			if (usuarioDTO.getConsultorioMedico() == null) {
+				usuarioDTO.setConsultorioMedico(new ConsultorioMedico());
+			} else {
+				// se muestra el vinculado
+				consultorios.add(usuarioDTO.getConsultorioMedico().getConsultorio());
 
+			}
+
+			// Obtener especialidades asociadas al médico
+			List<MedicoEspecialidad> especialidadesMedico = medicoEspecialidadService
+					.findByMedicoEspecialidadIdMultiple(usuarioDTO.getMedico().getId());
+			if (especialidadesMedico == null) {
+				especialidadesMedico = new ArrayList<>();
+			}
+			usuarioDTO.setMedicoEspecialidades(especialidadesMedico);
+
+			// Obtener los IDs de las especialidades vinculadas al médico
+			List<Integer> medicoEspecialidadesIds = usuarioDTO.getMedicoEspecialidades().stream()
+					.map(medicoEspecialidad -> medicoEspecialidad.getEspecialidad().getId())
+					.collect(Collectors.toList());
+
+			// Se envía al objeto general las especialidades
+			usuarioDTO.setEspecialidadesSeleccionadas(medicoEspecialidadesIds);
+			// Añadir la lista de IDs al modelo
+			model.addAttribute("medicoEspecialidadesIds", usuarioDTO.getEspecialidadesSeleccionadas());
 		} else if (userRol.getRol().getId() == 4) {
 			usuarioDTO.setPaciente(pacienteService.getPacienteByUsuario(usuario.getId()));
 		}
 
-		consultorios.addAll(consultoriosService.findAllConsultorios()); // Obtener la lista de consultorios
-		especialidades.addAll(especialidadService.findAllEspecialidadesSinEstado()); // Obtener la lista de especialdiades
+		consultorios.addAll(consultoriosService.findAllConsultorios());
+		especialidades.addAll(especialidadService.findAllEspecialidadesSinEstado()); // Añadir todas las especialidades
+																						// al Set
 
 		model.addAttribute("mostrarConsultorio", mostrarConsultorio);
 		model.addAttribute("consultorios", consultorios);
-		model.addAttribute("especialidades", especialidades);
+		model.addAttribute("especialidades", especialidades); // Convertir Set a Lista
 		model.addAttribute("usuarioDTO", usuarioDTO);
 		model.addAttribute("roles", roles);
 
@@ -303,12 +311,9 @@ public class UsuarioController {
 	public String guardarEdidarUsuarioRol(@PathVariable("id") int id,
 			@ModelAttribute("usuarioDTO") DatosEncapsulados usuarioDTO, BindingResult result,
 			RedirectAttributes redirectAttrs) {
+
 		// Actualizar persona
 		Persona persona = usuarioDTO.getPersona();
-		// Persona persona2 = personaService
-		Paciente pacienteNuevo = usuarioDTO.getPaciente();
-
-		// Encontrar el Usuario existente
 		Usuario usuarioExistente = usuarioService.findById(id);
 
 		if (usuarioExistente == null) {
@@ -318,7 +323,8 @@ public class UsuarioController {
 
 		UsuarioRol userRol = usuarioDTO.getUserRol();
 
-		if (userRol.getRol().getId() == 3) {
+		if (userRol.getRol().getId() == 3) { // Médico
+			Medico medico = medicoService.findByUsuarioId(usuarioExistente.getId());
 			// Guarda consultorio
 			Consultorios consultorio = consultoriosService
 					.findByIdConsultorio(usuarioDTO.getConsultorioMedico().getConsultorio().getId());
@@ -326,64 +332,123 @@ public class UsuarioController {
 			// Se obtiene la relación anterior al cambio de ConsultorioMedico
 			ConsultorioMedico consultorioMed = consultorioMedicoService.findByMedicoId(usuarioDTO.getMedico().getId());
 
-			Consultorios consultorioAnt = consultoriosService
-					.findByIdConsultorio(consultorioMed.getConsultorio().getId());
-			// Se estable Consultorio como libre antes de vincular a un siguiente
-			consultorioAnt.setEstado(1);
-			consultoriosService.save(consultorioAnt);
+			if (consultorioMed != null) {
+				Consultorios consultorioAnt = consultoriosService
+						.findByIdConsultorio(consultorioMed.getConsultorio().getId());
+				// Se estable Consultorio como libre antes de vincular a un siguiente
+				consultorioAnt.setEstado(1);
+				consultoriosService.save(consultorioAnt);
 
-			// Se establece Consultorio como ocupado 0, para el nuevo que se selecciona
-			consultorio.setEstado(0);
-			consultoriosService.save(consultorio);
+				// Se establece Consultorio como ocupado 0, para el nuevo que se selecciona
+				consultorio.setEstado(0);
+				consultoriosService.save(consultorio);
 
-			consultorioMedicoService.updateConsultorioId(consultorioAnt.getId(), consultorio.getId(),
-					usuarioDTO.getMedico().getId(), new Date());
+				consultorioMedicoService.updateConsultorioId(consultorioAnt.getId(), consultorio.getId(),
+						usuarioDTO.getMedico().getId(), new Date());
+			} else {
 
-			// Guarda especialidad
+				ConsultorioMedico consultorioMedico = new ConsultorioMedico();
+				// System.out.println("cuando no hay consultorioMed "+consultorio.getId());
+				// Manejar el Consultorio
 
-			Especialidad especialidad = especialidadService
-					.findByIdEspecialidad(usuarioDTO.getMedicoEspecialidad().getEspecialidad().getId());
+				consultorio.setEstado(0); // Consultorio ocupado
+				consultoriosService.save(consultorio);
 
-			// Se obtiene la relación anterior al cambio de ConsultorioMedico
-			MedicoEspecialidad medicoEspecialidad = medicoEspecialidadService
-					.findByMedicoEspecialidadId(usuarioDTO.getMedico().getId());
+				ConsultorioMedicoId consultorioMedicoId = new ConsultorioMedicoId(consultorio.getId(), medico.getId());
+				consultorioMedico.setId(consultorioMedicoId);
+				consultorioMedico.setMedico(medico);
+				consultorioMedico.setConsultorio(consultorio);
+				consultorioMedico.setFecha(new Date());
+				consultorioMedicoService.save(consultorioMedico);
 
-			Especialidad especialidadAnt = especialidadService
-					.findByIdEspecialidad(medicoEspecialidad.getEspecialidad().getId());
-			// Se estable Consultorio como libre antes de vincular a un siguiente
-			especialidadAnt.setEstado(1);
-			especialidadService.save(especialidadAnt);
+			}
 
-			// Se establece Consultorio como ocupado 0, para el nuevo que se selecciona
-			especialidad.setEstado(0);
-			especialidadService.save(especialidad);
+			// 1. Obtener las especialidades seleccionadas en el formulario
+			List<Integer> especialidadesSeleccionadasIds = usuarioDTO.getEspecialidadesSeleccionadas();
 
-			medicoEspecialidadService.updateEspecialidadId(especialidadAnt.getId(), especialidad.getId(),
-					usuarioDTO.getMedico().getId());
+			// 2. Obtener las especialidades actualmente asociadas al médico
+			List<MedicoEspecialidad> especialidadesActuales = medicoEspecialidadService
+					.findByMedicoEspecialidadId(medico.getId());
 
+			if (especialidadesActuales.isEmpty()) {
+				System.out.println("especialidades actuales ENTRAAA");
+				// 4. Agregar nuevas relaciones
+				for (Integer especialidadId : especialidadesSeleccionadasIds) {
+					System.out.println("especialidades actuales ENTRAAA foooooooor");
+					MedicoEspecialidad nuevaRelacion = new MedicoEspecialidad();
+					Especialidad nuevaEspecialidad = especialidadService.findByIdEspecialidad(especialidadId);
+					System.out.println("especialidades actuales ENTRAAA foooooooor" + nuevaEspecialidad.getNombre());
+					nuevaEspecialidad.setEstado(0);
+					especialidadService.save(nuevaEspecialidad);
+
+					// Nueva relacion medico-especialidad
+					MedicoEspecialidadId medicoEspecialidadoId = new MedicoEspecialidadId(medico.getId(),
+							nuevaEspecialidad.getId());
+
+					nuevaRelacion.setId(medicoEspecialidadoId);
+					nuevaRelacion.setMedico(medico);
+					nuevaRelacion.setEspecialidad(nuevaEspecialidad);
+					medicoEspecialidadService.save(nuevaRelacion);
+
+				}
+			} else {
+
+				// 3. Eliminar relaciones no seleccionadas
+				for (MedicoEspecialidad me : especialidadesActuales) {
+					if (!especialidadesSeleccionadasIds.contains(me.getEspecialidad().getId())) {
+						// valida que si especialidad no esta relacionada con medico la ponga en 1 =>
+						// Disponible
+						// --- validar que si ya no queda ninguna relacion poner en estado 1 y guardar
+						// multiple
+
+						Especialidad especialidadActEstado = especialidadService
+								.findByIdEspecialidad(me.getEspecialidad().getId());
+						if (medicoEspecialidadService
+								.findByMedicoEspecialidadCount(me.getEspecialidad().getId()) == 1) {
+
+							especialidadActEstado.setEstado(1);
+						}
+						especialidadActEstado.setFechaModificacion(new Date());
+						especialidadService.save(especialidadActEstado);
+
+						medicoEspecialidadService.delete(me);
+					}
+				}
+
+				// 4. Agregar nuevas relaciones
+				for (Integer especialidadId : especialidadesSeleccionadasIds) {
+					boolean yaAsociada = especialidadesActuales.stream()
+							.anyMatch(me -> me.getEspecialidad().getId() == (especialidadId));
+					if (!yaAsociada) {
+						Especialidad nuevaEspecialidad = especialidadService.findByIdEspecialidad(especialidadId);
+						MedicoEspecialidad nuevaRelacion = new MedicoEspecialidad();
+						nuevaRelacion.setMedico(medico);
+						nuevaRelacion.setEspecialidad(nuevaEspecialidad);
+						medicoEspecialidadService.save(nuevaRelacion);
+					}
+				}
+			}
+
+			// Actualizar consultorio y demás lógica que ya tienes...
 			personaService.save(persona);
-		} else if (userRol.getRol().getId() == 4) {
 
-			pacienteNuevo = pacienteService.getPacienteByUsuario(usuarioExistente.getId());
+		} else if (userRol.getRol().getId() == 4) { // Paciente
+			Paciente pacienteNuevo = pacienteService.getPacienteByUsuario(usuarioExistente.getId());
 			pacienteNuevo.setPersona(persona);
 			pacienteNuevo.setEdad(pacienteNuevo.getEdad());
 			pacienteService.save(pacienteNuevo);
 			personaService.save(persona);
 		} else {
+			// Guardar solo datos del usuario
 			personaService.save(persona);
 
-			// Actualizar datos del Usuario
 			Usuario usuario = usuarioDTO.getUsuario();
 			usuarioExistente.setUsername(usuario.getUsername());
-			// verifica si se puso una nueva clave
 			if (usuario.getPassword() != null && !usuario.getPassword().isEmpty()) {
-				// System.out.println("Entro porque si puso clave");
 				String hashedPassword = passwordEncoder.encode(usuario.getPassword());
-				usuario.setPassword(hashedPassword);
-				usuarioExistente.setPassword(usuario.getPassword());
+				usuarioExistente.setPassword(hashedPassword);
 			}
 			usuarioExistente.setEnabled(usuario.getEnabled());
-			// Guardar cambios del Usuario
 			usuarioService.save(usuarioExistente);
 		}
 

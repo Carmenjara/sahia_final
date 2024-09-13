@@ -20,9 +20,9 @@ import ec.edu.utpl.smp.app.smpaplication.models.services.interfaces.IHorarioServ
 import ec.edu.utpl.smp.app.smpaplication.models.services.interfaces.IUsuarioService;
 
 @Controller
-@RequestMapping("/horario")
-@SessionAttributes("horario")
-public class HorarioController {
+@RequestMapping("/medico")
+@SessionAttributes("medico")
+public class MedicoController {
 
 	@Autowired
 	private IUsuarioService usuarioService;
@@ -39,8 +39,8 @@ public class HorarioController {
 
 	@RequestMapping("/listar_medicos")
 	public String listarMedicos(Model model) {
-		model.addAttribute("titulo", "Registrar Horario");
-		model.addAttribute("listUsuarios", usuarioService.findAllMedicos());
+		model.addAttribute("titulo", "Listar Médicos");
+		model.addAttribute("listMedicos", usuarioService.findAllMedicos());
 		return "medico/listar_medico";
 	}
 

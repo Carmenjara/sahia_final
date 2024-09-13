@@ -20,6 +20,7 @@
 							    <th hidden>ID</th>
 								<th>Nombre</th>
 								<th>Descripción</th>
+								<th>Fecha Actualización</th>
 								<th>Estado</th>
 								<th th:if="${role == 'ROLE_ADMIN'}" >Acciones</th>
 							</tr>
@@ -29,6 +30,7 @@
 								<td th:text="${especialidad.id}" hidden>ID</td>
 								<td th:text="${especialidad.nombre}">Nombre</td>
 								<td th:text="${especialidad.descripcion}">Descripción</td>
+								<td th:text="${especialidad.fechaModificacion}">Fecha Actualización</td>
 								<td>
 									<span th:switch="${especialidad.estado}">
 										<span th:case="0">No disponible</span>

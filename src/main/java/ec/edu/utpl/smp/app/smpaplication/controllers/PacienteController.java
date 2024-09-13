@@ -1,14 +1,9 @@
 package ec.edu.utpl.smp.app.smpaplication.controllers;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -57,7 +52,6 @@ public class PacienteController {
 
 	/* -------------- Listar Paciente -------------- */
 
-	
 	@RequestMapping("/listar_pacientes")
 	public String listarPacientes(Model model) {
 		model.addAttribute("titulo", "Pacientes Registrados");
@@ -85,47 +79,6 @@ public class PacienteController {
 		status.setComplete();
 		// flash.addFlashAttribute("success", mensajeFlash);
 		System.out.println("Datos Guardados");
-		return "redirect:/personal/listar_personal";
-	}
-
-	/* -------------- Editar Paciente -------------- */
-
-	
-	@RequestMapping(value = "/editar_personal/{idpersonal}")
-	public String editar(@PathVariable(value = "idpersonal") long idpersonal, Map<String, Object> model,
-			RedirectAttributes flash) {
-
-		long idrango = 1;
-		//Personal personal = null;
-
-		if (idpersonal > 0) {
-			//personal = personalService.get(idpersonal);
-			//if (personal == null) {
-				flash.addFlashAttribute("error", "El ID del Personal que Desea Editar No Existe en la Base de Datos!");
-				return "redirect:/personal//listar_personal";
-			//}
-		} else {
-			flash.addFlashAttribute("error", "El ID del Personal que Desea Editar No Puede Ser Cero!");
-			return "redirect:/personal/listar_personal";
-		}
-
-		//List<Item> listRangos = itemService.listaItems(idrango);
-		//model.put("titulo", "Editar Personal Policial");
-		//model.put("personal", personal);
-		//model.put("items_rango", listRangos);
-
-		//return "personal/editar_personal";
-	}
-
-	/* -------------- Eliminar Personal -------------- */
-
-	@RequestMapping("/eliminar_personal/{idpersonal}")
-	public String eliminarPersonal(@PathVariable(name = "idpersonal") long idpersonal, RedirectAttributes flash) {
-
-		if (idpersonal > 0) {
-			//personalService.delete(idpersonal);
-			flash.addFlashAttribute("success", "Personal Eliminado Exitosamente!");
-		}
 		return "redirect:/personal/listar_personal";
 	}
 

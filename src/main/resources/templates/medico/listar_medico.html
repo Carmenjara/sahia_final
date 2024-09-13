@@ -25,14 +25,14 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="usuario : ${listUsuarios}">
-								<td th:text="${usuario.id}" hidden>ID</td>
+							<tr th:each="medico : ${listMedicos}">
+								<td th:text="${medico.id}" hidden>ID</td>
 
-								<td th:text="${usuario.persona.identificacion}">Identificación</td>
-								<td th:text="${usuario.persona.nombres}">Nombres</td>
-								<td th:text="${usuario.persona.apellidos}">Apellidos</td>
-								<td th:text="${usuario.persona.telefono}">Teléfono</td>
-								<td th:text="${usuario.persona.correo}">Correo</td>
+								<td th:text="${medico.persona.identificacion}">Identificación</td>
+								<td th:text="${medico.persona.nombres}">Nombres</td>
+								<td th:text="${medico.persona.apellidos}">Apellidos</td>
+								<td th:text="${medico.persona.telefono}">Teléfono</td>
+								<td th:text="${medico.persona.correo}">Correo</td>
 								
 							</tr>
 						</tbody>

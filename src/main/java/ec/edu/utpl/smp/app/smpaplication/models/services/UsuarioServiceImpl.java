@@ -9,13 +9,17 @@ import org.springframework.stereotype.Service;
 
 import ec.edu.utpl.smp.app.smpaplication.models.dao.IConsultorioMedicoRepository;
 import ec.edu.utpl.smp.app.smpaplication.models.dao.IMedicoEspecialidadRepository;
+import ec.edu.utpl.smp.app.smpaplication.models.dao.IPersonaRepository;
 import ec.edu.utpl.smp.app.smpaplication.models.dao.IRolesRepository;
 import ec.edu.utpl.smp.app.smpaplication.models.dao.IUsuarioRepository;
 import ec.edu.utpl.smp.app.smpaplication.models.dao.IUsuarioRolRepository;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.ConsultorioMedico;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.Consultorios;
+import ec.edu.utpl.smp.app.smpaplication.models.entities.DatosEncapsulados;
+import ec.edu.utpl.smp.app.smpaplication.models.entities.Especialidad;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.Medico;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.MedicoEspecialidad;
+import ec.edu.utpl.smp.app.smpaplication.models.entities.Persona;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.Roles;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.Usuario;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.UsuarioRol;
@@ -44,6 +48,9 @@ public class UsuarioServiceImpl implements IUsuarioService, IRolesService, IUsua
 
 	@Autowired
 	private IMedicoEspecialidadRepository medicoEspecialidadRepository;
+
+	@Autowired
+	private IPersonaRepository personaRepository;
 
 	@Override
 	public Iterable<Usuario> getAllUsers() {
@@ -147,7 +154,7 @@ public class UsuarioServiceImpl implements IUsuarioService, IRolesService, IUsua
 	}
 
 	@Override
-	public MedicoEspecialidad findByMedicoEspecialidadId(Integer medicoId) {
+	public List<MedicoEspecialidad> findByMedicoEspecialidadId(Integer medicoId) {
 		return medicoEspecialidadRepository.findByMedicoEspecialidadId(medicoId);
 	}
 
@@ -172,24 +179,85 @@ public class UsuarioServiceImpl implements IUsuarioService, IRolesService, IUsua
 	}
 
 	@Override
-	public List<ConsultorioMedico> findConsultoriosWithMedico() {
+	public List<DatosEncapsulados> findConsultoriosWithMedico() {
 		List<Object[]> results = consultorioMedicoRepository.findConsultoriosWithMedico();
-		List<ConsultorioMedico> consultoriosWithMedico = new ArrayList<>();
+
+		List<DatosEncapsulados> consultorioMedicoDTOs = new ArrayList<>();
 
 		for (Object[] result : results) {
-			Consultorios consultorio = (Consultorios) result[0];
-			Medico medico = (Medico) result[1]; // Puede ser null
-			Date fecha = (Date) result[2]; // Puede ser null
+			Integer consultorioId = (Integer) result[0];
+			String consultorioNombre = (String) result[1];
+			Integer consultorioEstado = (Integer) result[2];
+			Integer medicoId = result[3] != null ? (Integer) result[3] : null;
+			Integer personaId = result[4] != null ? (Integer) result[4] : null;
+			Date fechaAsignacion = (Date) result[5];
+			Integer especialidadId = result[6] != null ? (Integer) result[6] : null;
+			String especialidadNombre = result[7] != null ? (String) result[7] : null;
+
+			DatosEncapsulados dto = new DatosEncapsulados();
+			Consultorios consultorio = new Consultorios();
+			consultorio.setId(consultorioId);
+			consultorio.setNombre(consultorioNombre);
+			consultorio.setEstado(consultorioEstado);
+
+			Medico medico = null;
+
+			if (medicoId != null) {
+				medico = new Medico();
+				medico.setId(medicoId);
+
+				Persona persona = personaRepository.findByIdP(personaId);
+				if (persona.getId() != 0) {
+					persona.setId(persona.getId());
+					medico.setPersona(persona);
+				}
+			}
+
+			Especialidad especialidad = null;
+			if (especialidadId != null) {
+				especialidad = new Especialidad();
+				especialidad.setId(especialidadId);
+				especialidad.setNombre(especialidadNombre);
+			}
+
+			System.out.println("nombres del medico " + personaId);
+
+			dto.setConsultorio(consultorio);
+			dto.setMedico(medico);
+			dto.setEspecialidad(especialidad);
 
 			ConsultorioMedico consultorioMedico = new ConsultorioMedico();
 			consultorioMedico.setConsultorio(consultorio);
 			consultorioMedico.setMedico(medico);
-			consultorioMedico.setFecha(fecha);
+			consultorioMedico.setFecha(fechaAsignacion);
 
-			consultoriosWithMedico.add(consultorioMedico);
+			dto.setConsultorioMedico(consultorioMedico);
+
+			consultorioMedicoDTOs.add(dto);
 		}
 
-		return consultoriosWithMedico;
+		return consultorioMedicoDTOs;
+	}
+
+	@Override
+	public void delete(MedicoEspecialidad medicoEspecialidad) {
+		medicoEspecialidadRepository.delete(medicoEspecialidad);
+
+	}
+
+	@Override
+	public List<MedicoEspecialidad> findByMedicoEspecialidadIdMultiple(int medicoId) {
+		return medicoEspecialidadRepository.findByMedicoEspecialidadIdMultiple(medicoId);
+	}
+
+	@Override
+	public int findByConsultorioId(int id) {
+		return consultorioMedicoRepository.findByConsultorioId(id);
+	}
+
+	@Override
+	public int findByMedicoEspecialidadCount(int id) {
+		return medicoEspecialidadRepository.findByMedicoEspecialidadCount(id);
 	}
 
 }

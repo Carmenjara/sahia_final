@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ec.edu.utpl.smp.app.smpaplication.models.entities.ConsultorioMedico;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.Consultorios;
 import ec.edu.utpl.smp.app.smpaplication.models.entities.DatosEncapsulados;
 import ec.edu.utpl.smp.app.smpaplication.models.services.interfaces.IConsultorioMedicoService;
@@ -26,7 +25,7 @@ public class ConsultorioController {
 
 	@Autowired
 	private IConsultoriosService consultorioService;
-	
+
 	@Autowired
 	private IConsultorioMedicoService consultorioMedicoService;
 
@@ -44,9 +43,9 @@ public class ConsultorioController {
 
 	@RequestMapping("/listar_consultorio")
 	public String verPaginaP(Model model) {
-		
-		List<ConsultorioMedico> consultoriosAsignados = consultorioMedicoService.findConsultoriosWithMedico();	
-	    System.out.println("Total de consultorios: " + consultoriosAsignados.size());
+
+		List<DatosEncapsulados> consultoriosAsignados = consultorioMedicoService.findConsultoriosWithMedico();
+		System.out.println("Total de consultorios: " + consultoriosAsignados.size());
 
 		model.addAttribute("consultoriosAsignados", consultoriosAsignados);
 		model.addAttribute("titulo", "Consultorios Registrados");

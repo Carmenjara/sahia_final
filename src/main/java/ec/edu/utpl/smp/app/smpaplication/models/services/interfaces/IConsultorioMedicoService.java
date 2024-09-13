@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import ec.edu.utpl.smp.app.smpaplication.models.entities.ConsultorioMedico;
+import ec.edu.utpl.smp.app.smpaplication.models.entities.DatosEncapsulados;
 
 public interface IConsultorioMedicoService {
 
@@ -16,6 +17,8 @@ public interface IConsultorioMedicoService {
 
 	public int updateConsultorioId(int oldConsultorioId, int newConsultorioId, int medicoId, Date fecha);
 
-	public List<ConsultorioMedico> findConsultoriosWithMedico();
+	public List<DatosEncapsulados> findConsultoriosWithMedico();
+
+	public int findByConsultorioId(int id);
 
 }

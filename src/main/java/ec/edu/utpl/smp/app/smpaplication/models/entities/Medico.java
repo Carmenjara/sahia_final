@@ -20,6 +20,8 @@ public class Medico implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	private int estado;
+
 	@ManyToOne
 	@JoinColumn(name = "persona_id")
 	private Persona persona;
@@ -27,9 +29,10 @@ public class Medico implements Serializable {
 	public Medico() {
 	}
 
-	public Medico(int id, Persona persona) {
+	public Medico(int id, int estado, Persona persona) {
 		super();
 		this.id = id;
+		this.estado = estado;
 		this.persona = persona;
 	}
 
@@ -39,6 +42,14 @@ public class Medico implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
 	}
 
 	public Persona getPersona() {

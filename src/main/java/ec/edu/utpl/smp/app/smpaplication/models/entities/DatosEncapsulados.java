@@ -27,7 +27,9 @@ public class DatosEncapsulados {
 	private MedicamentoRecetaId medicamentoRecetaId;
 	private Factura factura;
 	private Long citaId;
+	private List<Integer> especialidadesSeleccionadas;
 	private List<Long> medicamentoIds;
+	private List<MedicoEspecialidad> medicoEspecialidades;
 
 	private CitaMedica cita;
 
@@ -42,7 +44,8 @@ public class DatosEncapsulados {
 			MedicoHorario medicoHorario, ConsultorioMedico consultorioMedico, Consultorios consultorio,
 			Especialidad especialidad, MedicoEspecialidad medicoEspecialidad, HistorialMedico historial, Receta receta,
 			Medicamento medicamento, MedicamentoReceta medicamentoReceta, MedicamentoRecetaId medicamentoRecetaId,
-			Factura factura, Long citaId, List<Long> medicamentoIds, CitaMedica cita, LocalDate fechaNacimiento) {
+			Factura factura, Long citaId, List<Integer> especialidadesSeleccionadas, List<Long> medicamentoIds,
+			List<MedicoEspecialidad> medicoEspecialidades, CitaMedica cita, LocalDate fechaNacimiento) {
 		super();
 		this.persona = persona;
 		this.usuario = usuario;
@@ -65,7 +68,9 @@ public class DatosEncapsulados {
 		this.medicamentoRecetaId = medicamentoRecetaId;
 		this.factura = factura;
 		this.citaId = citaId;
+		this.especialidadesSeleccionadas = especialidadesSeleccionadas;
 		this.medicamentoIds = medicamentoIds;
+		this.medicoEspecialidades = medicoEspecialidades;
 		this.cita = cita;
 		this.fechaNacimiento = fechaNacimiento;
 	}
@@ -254,12 +259,28 @@ public class DatosEncapsulados {
 		this.citaId = citaId;
 	}
 
+	public List<Integer> getEspecialidadesSeleccionadas() {
+		return especialidadesSeleccionadas;
+	}
+
+	public void setEspecialidadesSeleccionadas(List<Integer> especialidadesSeleccionadas) {
+		this.especialidadesSeleccionadas = especialidadesSeleccionadas;
+	}
+
 	public List<Long> getMedicamentoIds() {
 		return medicamentoIds;
 	}
 
 	public void setMedicamentoIds(List<Long> medicamentoIds) {
 		this.medicamentoIds = medicamentoIds;
+	}
+
+	public List<MedicoEspecialidad> getMedicoEspecialidades() {
+		return medicoEspecialidades;
+	}
+
+	public void setMedicoEspecialidades(List<MedicoEspecialidad> medicoEspecialidades) {
+		this.medicoEspecialidades = medicoEspecialidades;
 	}
 
 }
